@@ -1,0 +1,14 @@
+# A list of directories to scan for Markdown files.
+# Use full paths for reliability, especially if running the script from different locations.
+# Example for macOS/Linux:
+# scan_directories:
+#   - /Users/yourusername/Documents/ObsidianVault/Notes
+#   - /Users/yourusername/Documents/ObsidianVault/Articles
+#
+# Example for Windows:
+# scan_directories:
+#   - C:\Users\yourusername\Documents\ObsidianVault\Notes
+
+scan_directories:
+  - "/Users/stephenelms/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian Vault/Literature Highlights/PDF"
+ 
