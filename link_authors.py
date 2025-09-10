@@ -5,7 +5,8 @@ import yaml
 
 # --- Configuration ---
 CONFIG_FILE = "config.yaml"
-AUTHORS_JSON_FILE = "authors.json"
+# MODIFICATION: The line below is no longer needed as it will be read from config.yaml
+# AUTHORS_JSON_FILE = "authors.json"
 
 def load_config():
     """Loads the list of directories to scan from the YAML config file."""

@@ -9,6 +9,11 @@
 # scan_directories:
 #   - C:\Users\yourusername\Documents\ObsidianVault\Notes
 
+ # A list of directories to scan for Markdown files.
 scan_directories:
   - "/Users/stephenelms/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian Vault/Literature Highlights/PDF"
  
+
+# Path to the data files for the linking scripts.
+authors_json_file: "authors.json"
+keywords_csv_file: "keyword-mapping.csv"
