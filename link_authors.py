@@ -9,26 +9,25 @@ CONFIG_FILE = "config.yaml"
 # AUTHORS_JSON_FILE = "authors.json"
 
 def load_config():
-    """Loads the list of directories to scan from the YAML config file."""
+    """Loads configuration from the YAML file."""
     try:
         with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
-            config = yaml.safe_load(f)
-            return config.get('scan_directories', [])
+            return yaml.safe_load(f)
     except FileNotFoundError:
         print(f"Error: Configuration file '{CONFIG_FILE}' not found.")
-        return []
+        return None
 
-def load_authors():
+def load_authors(filepath):
     """Loads the author data from the JSON file."""
     try:
-        with open(AUTHORS_JSON_FILE, 'r', encoding='utf-8') as f:
+        with open(filepath, 'r', encoding='utf-8') as f:
             # Sort authors by length of full name, longest first.
             # This prevents "John Smith" from being replaced before "John Smith Jr."
             authors = json.load(f)
             authors.sort(key=lambda x: len(x['fullName']), reverse=True)
             return authors
     except FileNotFoundError:
-        print(f"Error: Author data file '{AUTHORS_JSON_FILE}' not found.")
+        print(f"Error: Author data file '{filepath}' not found.")
         return []
 
 def process_markdown_file(filepath, authors):
@@ -79,12 +78,18 @@ def main():
     """Main function to orchestrate the linking process."""
     print("Starting author linking process...")
     
-    scan_directories = load_config()
-    if not scan_directories:
-        print("No directories specified in config.yaml. Exiting.")
+    config = load_config()
+    if not config:
         return
 
-    authors = load_authors()
+    scan_directories = config.get('scan_directories', [])
+    authors_json_file = config.get('authors_json_file')
+
+    if not scan_directories or not authors_json_file:
+        print("Error: 'scan_directories' or 'authors_json_file' not set in config.yaml. Exiting.")
+        return
+
+    authors = load_authors(authors_json_file)
     if not authors:
         print("No authors loaded from authors.json. Exiting.")
         return
