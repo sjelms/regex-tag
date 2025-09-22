@@ -18,8 +18,8 @@ This project provides a Python-based utility to automatically create a network o
 
 The workflow is designed as a multi-step pipeline. You can run the scripts in sequence to take your references from a single `.bib` file to a fully integrated part of your knowledge base.
 
-1.  **Maintain `obsidian.bib`**: This is your single source of truth. All your academic references should be managed here, preferably using a tool like Zotero with the Better BibTeX plugin for easy export.
-2.  **Generate `authors.json` (`create_author_json.py`)**: This script parses your `obsidian.bib` file and creates a clean, unique, and alphabetized list of all authors. This JSON file acts as a master list for the other scripts.
+1.  **Maintain `regex-tag.bib`: This is your single source of truth. All your academic references should be managed here, preferably using a tool like Zotero with the Better BibTeX plugin for easy export.
+2.  **Generate `authors.json` (`create_author_json.py`)**: This script parses your `regex-tag.bib` file and creates a clean, unique, and alphabetized list of all authors. This JSON file acts as a master list for the other scripts.
 3.  **Link Authors in Your Vault (`link_authors.py`)**: This final script uses the `authors.json` master list to scan your personal note directories (defined in `config.yaml`). It finds mentions of authors and intelligently converts them into the correct wiki-links, connecting your thoughts directly to the source material.
 
 ---
@@ -29,7 +29,7 @@ The workflow is designed as a multi-step pipeline. You can run the scripts in se
 ### Prerequisites
 
 -   Python 3.8+
--   A BibTeX management tool (e.g., Zotero) to maintain your `obsidian.bib` file.
+-   A BibTeX management tool (e.g., Zotero) to maintain your `regex-tag.bib` file.
 
 ### Installation & Setup
 
@@ -64,7 +64,7 @@ The workflow is designed as a multi-step pipeline. You can run the scripts in se
     ```
 
 4.  **Configure the Project**
-    -   **BibTeX File**: Place your BibTeX file in the root of the project and ensure it is named `obsidian.bib`. If you use a different name, update the `BIBTEX_INPUT_FILE` variable in `create_author_json.py` and `convert_bibtex.py`.
+    -   **BibTeX File**: Place your BibTeX file in the root of the project and ensure it is named `regex-tag.bib`. If you use a different name, update the `BIBTEX_INPUT_FILE` variable in `create_author_json.py` and `convert_bibtex.py`.
     -   **Directories to Scan**: Open `config.yaml` and replace the placeholder paths with the **full paths** to the directories in your PKM vault that you want the linking script to process.
 
 ---

@@ -3,7 +3,7 @@ import json
 import re
 
 # --- Configuration ---
-BIBTEX_INPUT_FILE = "obsidian.bib"
+BIBTEX_INPUT_FILE = "regex-tag.bib"
 JSON_OUTPUT_FILE = "authors.json"
 
 def process_author_name(raw_name: str) -> dict | None:
