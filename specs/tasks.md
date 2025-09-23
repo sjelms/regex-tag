@@ -15,7 +15,7 @@
 
 - [ ] T001: Create directory `src/pkm_linker/`.
 - [ ] T002: Add `python-frontmatter` and `python-dotenv` to `requirements.txt`.
-- [ ] T003: Create a `.env.example` file in the root directory with placeholder content for future LLM API keys.
+- [x] T003: Create a `.env.example` file in the root directory with LLM API key.
 - [ ] T004: In `config.yaml`, add a new key `term_source_directory:` with a placeholder path.
 
 ### Phase 1 Checkpoint
