@@ -64,8 +64,9 @@ The workflow is designed as a multi-step pipeline. You can run the scripts in se
     ```
 
 4.  **Configure the Project**
+    -   Copy `config.example.yaml` to `config.yaml` and update the placeholders with your local paths.
     -   **BibTeX File**: Place your BibTeX file in the root of the project and ensure it is named `regex-tag.bib`. If you use a different name, update the `BIBTEX_INPUT_FILE` variable in `create_author_json.py` and `convert_bibtex.py`.
-    -   **Directories to Scan**: Open `config.yaml` and replace the placeholder paths with the **full paths** to the directories in your PKM vault that you want the linking script to process.
+    -   **Directories to Scan**: Fill in `tag_extract_directories` for the folders that hold your terminology notes and `scan_directories` for the locations that should be processed by the linking scripts. You can keep the other entries (e.g., `keyword_output_csv`) as-is unless you need a custom output location.
 
 ---
 
@@ -83,9 +84,19 @@ Run the scripts from the terminal in the project's root directory.
     python convert_bibtex.py
     ```
 
-3.  **Link Authors in Your Vault** (Run this to link authors in your other notes)
+3.  **Extract Keyword Mappings** (Run this to build/update `keyword-mapping.csv` from your terminology notes)
+    ```bash
+    python tag_extract.py
+    ```
+
+4.  **Link Authors in Your Vault** (Run this to link authors in your other notes)
     ```bash
     python link_authors.py
+    ```
+
+5.  **Link Keywords in Your Vault** (Run this after updating `keyword-mapping.csv` to insert keyword links)
+    ```bash
+    python link_keywords.py
     ```
 
 ---

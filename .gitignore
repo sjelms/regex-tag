@@ -3,6 +3,7 @@
 .AppleDouble
 .LSOverride
 /_helper
+config.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -63,6 +64,7 @@ cover/
 
 # Django stuff:
 *.log
+*.err
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
