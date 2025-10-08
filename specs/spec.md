@@ -40,15 +40,15 @@ As a researcher and note-taker, I want to automatically create links in my perso
 - **FR-005**: The CLI MUST support running each function individually via flags (e.g., `--link-authors`, `--generate-keywords`) or all together (`--all`).
 
 ### Keyword Generation Requirements
-- **FR-006**: System MUST scan a user-defined `term_source_directory` (from `config.yaml`) for Markdown files.
-- **FR-007**: For each file in the `term_source_directory`, the system MUST parse its YAML frontmatter.
-- **FR-008**: The system MUST identify a primary term, using the `term` field from the YAML or falling back to the filename if the `term` field is absent.
-- **FR-009**: The system MUST extract all aliases from the `aliases` list in the YAML.
-- **FR-010**: The system MUST generate a `keyword-mapping.csv` file by creating a mapping from every alias (and the primary term itself) to the primary term.
+- **FR-006**: System MUST read a single, user-defined text file of terms (e.g., `parent-list-terms.md`).
+- **FR-007**: For each line in the term file, the system MUST treat the entire line as the canonical `LinkTarget`, corresponding to a filename.
+- **FR-008**: The system MUST parse each line to identify aliases. If a line contains an abbreviation in parentheses (e.g., "Cognitive Load Theory (CLT)"), the system MUST extract three aliases: the full string, the term itself ("Cognitive Load Theory"), and the abbreviation ("CLT").
+- **FR-009**: The system MUST resolve alias conflicts by prioritizing the mapping associated with the most descriptive (longest) `LinkTarget`. For example, the alias "MIT" should map to "Massachusetts Institute of Technology (MIT)", not to "MIT".
+- **FR-010**: The system MUST generate a `keyword-mapping.csv` file containing two columns, `Alias` and `LinkTarget`, to store these mappings.
 
 ### Linking Requirements
 - **FR-011**: System MUST find and replace plain-text author names in Markdown files with `[[FullName]]` or `[[FullName|LastName]]` style wiki-links, using the `authors.json` file as a source.
-- **FR-012**: System MUST find and replace keywords in Markdown files with `[[LinkTarget]]` style wiki-links, using the `keyword-mapping.csv` as a source.
+- **FR-012**: System MUST find and replace keywords in Markdown files using the `keyword-mapping.csv`. If the text found in the note (the `Alias`) is different from the `LinkTarget`, the link MUST be created using the piped format: `[[LinkTarget|Alias]]`.
 - **FR-013**: System MUST NOT modify or re-link text that is already enclosed in `[[...]]` wiki-links (idempotency).
 
 ### Future "Smart Linking" Requirements

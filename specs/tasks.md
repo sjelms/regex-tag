@@ -28,8 +28,8 @@
 ## Phase 1.5: BibLaTeX Migration
 *Goal: Update the project to use pybtex for parsing BibLaTeX files.*
 
-- [ ] T007a: Update `create_author_json.py` to use `pybtex` and `latexcodec` to parse the BibLaTeX file.
-- [ ] T007b: Ensure the author processing logic in `create_author_json.py` correctly handles the output from `pybtex`.
+- [x] T007a: Update `create_author_json.py` to use `pybtex` and `latexcodec` to parse the BibLaTeX file.
+- [x] T007b: Ensure the author processing logic in `create_author_json.py` correctly handles the output from `pybtex`.
 
 ---
 
@@ -37,7 +37,7 @@
 *Goal: Write a failing test for the keyword generation feature before implementing it.*
 
 - [ ] T008: Create new test file `tests/test_generate_keywords.py`.
-- [ ] T009: In `tests/test_generate_keywords.py`, write a test that creates a temporary directory with mock `.md` term files (including YAML frontmatter) and asserts that a `keyword-mapping.csv` is generated with the correct content. This test MUST fail before proceeding.
+- [ ] T009: In `tests/test_generate_keywords.py`, write a test that creates a temporary mock term file (e.g., with content like "Cognitive Load Theory (CLT)") and asserts that a `keyword-mapping.csv` is generated with the correct `Alias` and `LinkTarget` columns. This test MUST fail before proceeding.
 
 ### Phase 2 Checkpoint
 - [ ] T010: Create session worklog in `logs/worklog_YYYY-MM-DD_s3.md`.
@@ -50,10 +50,10 @@
 *Goal: Implement the keyword generation script and refactor the project into the new `src` structure.*
 
 - [ ] T013: Create the script `src/pkm_linker/generate_keywords.py`.
-- [ ] T014: Implement the keyword generation logic in `src/pkm_linker/generate_keywords.py` to make the test from T009 pass.
+- [ ] T014: Implement the keyword generation logic in `src/pkm_linker/generate_keywords.py` to make the test from T009 pass. The script must parse the single term file and handle aliases in parentheses.
 - [ ] T015: [P] Move `create_author_json.py` to `src/pkm_linker/create_author_json.py`.
 - [ ] T016: [P] Move `link_authors.py` to `src/pkm_linker/link_authors.py`.
-- [ ] T017: [P] Move `link_keywords.py` to `src/pkm_linker/link_keywords.py`.
+- [ ] T017: [P] Move `link_keywords.py` to `src/pkm_linker/link_keywords.py` and update it to handle the piped link format `[[LinkTarget|Alias]]` when an alias is found.
 - [ ] T018: Update `main.py` to import all modules from their new locations within `src/pkm_linker/`.
 - [ ] T019: In `main.py`, add the `--generate-keywords` argument and wire it up to call the new `generate_keywords` function.
 
