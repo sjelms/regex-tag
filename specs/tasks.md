@@ -75,3 +75,22 @@
 - [ ] T026: Create session worklog in `logs/worklog_YYYY-MM-DD_s5.md`.
 - [ ] T027: Commit all staged changes with the message "docs: Update documentation and add placeholder for smart linking".
 - [ ] T028: Push the changes to the remote repository.
+
+---
+
+## Phase 5: Two-Stage & Smart Linking
+*Goal: Implement ambiguity detection and a smart-linking fallback using an LLM.*
+
+- [ ] T029: Update `config.yaml` to replace `keywords_csv_file` with `unambiguous_keywords_csv` and add `ambiguous_keywords_json`.
+- [ ] T030: Modify `src/pkm_linker/generate_keywords.py` to detect ambiguous aliases and output two files: `unambiguous-keywords.csv` and `ambiguous-keywords.json`.
+- [ ] T031: Update `tests/test_generate_keywords.py` to assert that both the unambiguous and ambiguous output files are created correctly.
+- [ ] T032: Modify `src/pkm_linker/link_keywords.py` to read from `unambiguous-keywords.csv`.
+- [ ] T033: Add `openai` to `requirements.txt` and install it.
+- [ ] T034: Implement the core logic in `src/pkm_linker/smart_link.py` to read `ambiguous-keywords.json`, find terms in notes, and call the OpenAI API for contextual analysis.
+- [ ] T035: Add a new `--smart-link` flag to `main.py` that triggers the `smart_link.py` script.
+- [ ] T036: Update the `--all` command in `main.py` to run the smart linker after the simple linker.
+
+### Phase 5 Checkpoint
+- [ ] T037: Create session worklog in `logs/worklog_YYYY-MM-DD_s6.md`.
+- [ ] T038: Commit all staged changes with the message "feat: Implement two-stage smart linking system".
+- [ ] T039: Push the changes to the remote repository.

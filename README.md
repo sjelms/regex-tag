@@ -17,6 +17,15 @@ This retroactively links your notes to your academic sources and key concepts, c
 -   **Configurable**: Uses a `config.yaml` file to easily define which note directories to scan.
 -   **Safe & Idempotent**: The linking scripts will not re-link text that is already inside `[[...]]` brackets, so they can be run multiple times safely.
 
+### How Keyword Linking Works
+
+The system generates a `keyword-mapping.csv` file that acts as a dictionary. It has two columns: `Alias` and `LinkTarget`.
+
+-   **`LinkTarget`**: This is always the full, canonical name of the note file (e.g., `Cognitive Load Theory (CLT)`).
+-   **`Alias`**: This is a term that should be linked (e.g., `CLT` or `Cognitive Load Theory`).
+
+When the script finds an `Alias` in your text, it looks up its `LinkTarget`. If they are different, it creates a piped link: `[[LinkTarget|Alias]]`. This ensures the link is correct while preserving the original text.
+
 ---
 
 ## 🚀 Getting Started

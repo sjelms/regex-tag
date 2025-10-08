@@ -1,3 +1,4 @@
+
 import csv
 import re
 from typing import Dict, List, Set
@@ -13,7 +14,7 @@ def generate_keyword_mappings(term_file_path: str, csv_output_path: str) -> None
     - Reads a flat list of terms.
     - The full line is the LinkTarget (filename).
     - Extracts aliases from parentheses, e.g., "Term (Alias)".
-    - Resolves alias conflicts by prioritizing longer, more descriptive LinkTargets.
+    - Resolves alias conflicts by prioritizing the longest, most descriptive LinkTarget.
 
     Args:
         term_file_path (str): The absolute path to the input term list file.
@@ -28,10 +29,6 @@ def generate_keyword_mappings(term_file_path: str, csv_output_path: str) -> None
         print(f"Error: Term file not found at {term_file_path}")
         return
 
-    # Sort by length descending to ensure longer targets are processed first,
-    # which helps in resolving alias conflicts correctly.
-    lines.sort(key=len, reverse=True)
-
     for line in lines:
         link_target: str = line
         aliases: Set[str] = {line}
@@ -45,10 +42,10 @@ def generate_keyword_mappings(term_file_path: str, csv_output_path: str) -> None
             aliases.add(alias_in_parens)
 
         for alias in aliases:
-            # The sort key on `lines` ensures that if an alias exists, it will only be
-            # overwritten by a more descriptive (longer) link target.
-            if alias not in mappings:
-                 mappings[alias] = link_target
+            # If the alias is new, add it.
+            # If the alias already exists, update it ONLY if the new link_target is longer (more descriptive).
+            if alias not in mappings or len(link_target) > len(mappings[alias]):
+                mappings[alias] = link_target
 
     # Write to CSV
     try:
