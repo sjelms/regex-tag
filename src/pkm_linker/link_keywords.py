@@ -1,3 +1,4 @@
+
 import os
 import re
 import yaml
@@ -24,10 +25,11 @@ def load_keywords(filepath):
             header = next(reader)  # Skip the header row
             for row in reader:
                 if len(row) >= 2:
+                    # The 'search' term is the Alias, 'replace' is the LinkTarget
                     keywords.append({'search': row[0], 'replace': row[1]})
         
         # Sort keywords by the length of the search term, longest first.
-        # This prevents "VR" from matching before "Mobile VR", for example.
+        # This prevents "MIT" from matching before "MIT Sloan School of Management".
         keywords.sort(key=lambda x: len(x['search']), reverse=True)
         return keywords
     except FileNotFoundError:
@@ -50,16 +52,28 @@ def process_markdown_file(filepath, keywords):
 
     for keyword in keywords:
         search_term = keyword['search']
-        replacement_string = keyword['replace']
+        link_target = keyword['replace']
         
-        # Regex to find the search term as a whole word, but not if it's already in [[...]]
-        # The word boundary \b is crucial here.
-        pattern = r'(?<!\[\[)\b' + re.escape(search_term) + r'\b(?!\||\]\])'
+        # Regex to find the search term as a whole word, but not if it's already part of a wiki-link.
+        pattern = r'(?<!\[\[)\\b' + re.escape(search_term) + r'\\b(?![\|\|\|]])'
+
+        # Determine the replacement format.
+        if search_term.lower() == link_target.lower():
+            # If the found term is the same as the target, create a direct link.
+            replacement = f'[[{link_target}]]'
+        else:
+            # If the found term is an alias, create a piped link.
+            replacement = f'[[{link_target}|{search_term}]]'
         
-        # The replacement format is [[replacement_string]]
-        replacement = f'[[{replacement_string}]]'
-        
-        content = re.sub(pattern, replacement, content)
+        # Use a function for replacement to handle case preservation of the found term
+        def create_replacement(match):
+            found_term = match.group(0)
+            if found_term.lower() == link_target.lower():
+                return f'[[{link_target}]]'
+            else:
+                return f'[[{link_target}|{found_term}]]'
+
+        content = re.sub(pattern, create_replacement, content, flags=re.IGNORECASE)
         
     if content != original_content:
         try:
