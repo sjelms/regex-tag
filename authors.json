@@ -125,6 +125,11 @@
     "lastName": "Lesgold"
   },
   {
+    "fullName": "Alan R Hevner",
+    "firstName": "Alan R",
+    "lastName": "Hevner"
+  },
+  {
     "fullName": "Alan Sparks",
     "firstName": "Alan",
     "lastName": "Sparks"
@@ -153,6 +158,11 @@
     "fullName": "Alberto Gallace",
     "firstName": "Alberto",
     "lastName": "Gallace"
+  },
+  {
+    "fullName": "Alessandro Deserti",
+    "firstName": "Alessandro",
+    "lastName": "Deserti"
   },
   {
     "fullName": "Alex Collins Arthur",
@@ -235,6 +245,16 @@
     "lastName": "Collins"
   },
   {
+    "fullName": "Allison Arieff",
+    "firstName": "Allison",
+    "lastName": "Arieff"
+  },
+  {
+    "fullName": "Allison Littlejohn",
+    "firstName": "Allison",
+    "lastName": "Littlejohn"
+  },
+  {
     "fullName": "Alvaro Lopez Rodriguez",
     "firstName": "Alvaro Lopez",
     "lastName": "Rodriguez"
@@ -248,6 +268,11 @@
     "fullName": "Amanda Kirby",
     "firstName": "Amanda",
     "lastName": "Kirby"
+  },
+  {
+    "fullName": "Amanda Minh Tran Le",
+    "firstName": "Amanda Minh Tran",
+    "lastName": "Le"
   },
   {
     "fullName": "Amelia Dicks",
@@ -293,6 +318,16 @@
     "fullName": "Andreas Ringhofer",
     "firstName": "Andreas",
     "lastName": "Ringhofer"
+  },
+  {
+    "fullName": "Andrew Agnew",
+    "firstName": "Andrew",
+    "lastName": "Agnew"
+  },
+  {
+    "fullName": "Andrew C Beall",
+    "firstName": "Andrew C",
+    "lastName": "Beall"
   },
   {
     "fullName": "Andrew Davies",
@@ -355,6 +390,11 @@
     "lastName": "Sawhney"
   },
   {
+    "fullName": "Ann Johns",
+    "firstName": "Ann",
+    "lastName": "Johns"
+  },
+  {
     "fullName": "Ann Lahiff",
     "firstName": "Ann",
     "lastName": "Lahiff"
@@ -368,6 +408,11 @@
     "fullName": "Ann Reich",
     "firstName": "Ann",
     "lastName": "Reich"
+  },
+  {
+    "fullName": "Anna Carolina M Queiroz",
+    "firstName": "Anna Carolina M",
+    "lastName": "Queiroz"
   },
   {
     "fullName": "Anna Carolina Muller Queiroz",
@@ -398,6 +443,11 @@
     "fullName": "Anne Wood Symons",
     "firstName": "Anne Wood",
     "lastName": "Symons"
+  },
+  {
+    "fullName": "Anoush Margaryan",
+    "firstName": "Anoush",
+    "lastName": "Margaryan"
   },
   {
     "fullName": "Anselm L Strauss",
@@ -505,6 +555,11 @@
     "lastName": "Newton"
   },
   {
+    "fullName": "Barbara A Han",
+    "firstName": "Barbara A",
+    "lastName": "Han"
+  },
+  {
     "fullName": "Barbara Barbieri",
     "firstName": "Barbara",
     "lastName": "Barbieri"
@@ -550,19 +605,29 @@
     "lastName": "Bekdik"
   },
   {
+    "fullName": "Basil Bernstein",
+    "firstName": "Basil",
+    "lastName": "Bernstein"
+  },
+  {
     "fullName": "Bec Evans",
     "firstName": "Bec",
     "lastName": "Evans"
   },
   {
     "fullName": "Belinda Brucker Juricic",
-    "firstName": "Belinda Brucker",
-    "lastName": "Juricic"
+    "firstName": "Belinda",
+    "lastName": "Brucker Juricic"
   },
   {
     "fullName": "Ben Dollar",
     "firstName": "Ben",
     "lastName": "Dollar"
+  },
+  {
+    "fullName": "Benedict Boulay",
+    "firstName": "Benedict",
+    "lastName": "Boulay"
   },
   {
     "fullName": "Benedict du Boulay",
@@ -640,6 +705,11 @@
     "lastName": "Bryson"
   },
   {
+    "fullName": "Bill Hughes",
+    "firstName": "Bill",
+    "lastName": "Hughes"
+  },
+  {
     "fullName": "Bill Schaninger",
     "firstName": "Bill",
     "lastName": "Schaninger"
@@ -653,6 +723,11 @@
     "fullName": "Blake J Boyd",
     "firstName": "Blake J",
     "lastName": "Boyd"
+  },
+  {
+    "fullName": "Blake Peck",
+    "firstName": "Blake",
+    "lastName": "Peck"
   },
   {
     "fullName": "Blake Watson",
@@ -780,6 +855,11 @@
     "lastName": "McNeil"
   },
   {
+    "fullName": "Cal Newport",
+    "firstName": "Cal",
+    "lastName": "Newport"
+  },
+  {
     "fullName": "Camille G Bitar",
     "firstName": "Camille G",
     "lastName": "Bitar"
@@ -870,19 +950,24 @@
     "lastName": "Barton"
   },
   {
+    "fullName": "Catherine Casey",
+    "firstName": "Catherine",
+    "lastName": "Casey"
+  },
+  {
     "fullName": "Catherine Dawson",
     "firstName": "Catherine",
     "lastName": "Dawson"
   },
   {
+    "fullName": "Cecilia Sik-Lanyi",
+    "firstName": "Cecilia",
+    "lastName": "Sik-Lanyi"
+  },
+  {
     "fullName": "Cecilia Vindrola-Padros",
     "firstName": "Cecilia",
     "lastName": "Vindrola-Padros"
-  },
-  {
-    "fullName": "Cécilia Sik-Lányi",
-    "firstName": "Cécilia",
-    "lastName": "Sik-Lányi"
   },
   {
     "fullName": "Chad Moutray",
@@ -896,8 +981,8 @@
   },
   {
     "fullName": "Chan King Chun",
-    "firstName": "Chan King",
-    "lastName": "Chun"
+    "firstName": "Chan",
+    "lastName": "King Chun"
   },
   {
     "fullName": "Charles Berryman",
@@ -963,6 +1048,11 @@
     "fullName": "Chinchih Chen",
     "firstName": "Chinchih",
     "lastName": "Chen"
+  },
+  {
+    "fullName": "Chris Anderson",
+    "firstName": "Chris",
+    "lastName": "Anderson"
   },
   {
     "fullName": "Chris Dede",
@@ -1100,6 +1190,11 @@
     "lastName": "Christensen"
   },
   {
+    "fullName": "Clemens Tesch-Römer",
+    "firstName": "Clemens",
+    "lastName": "Tesch-Römer"
+  },
+  {
     "fullName": "Cliff Kuang",
     "firstName": "Cliff",
     "lastName": "Kuang"
@@ -1120,11 +1215,6 @@
     "lastName": "Gagg"
   },
   {
-    "fullName": "Communities {Ministry of Housing",
-    "firstName": "Communities {Ministry of",
-    "lastName": "Housing"
-  },
-  {
     "fullName": "Condoleezza Rice",
     "firstName": "Condoleezza",
     "lastName": "Rice"
@@ -1143,11 +1233,6 @@
     "fullName": "Conrad Boton",
     "firstName": "Conrad",
     "lastName": "Boton"
-  },
-  {
-    "fullName": "Contractors}",
-    "firstName": "",
-    "lastName": "Contractors}"
   },
   {
     "fullName": "Cornel Hillmann",
@@ -1208,6 +1293,11 @@
     "fullName": "Dana Maor",
     "firstName": "Dana",
     "lastName": "Maor"
+  },
+  {
+    "fullName": "Dani Donovan",
+    "firstName": "Dani",
+    "lastName": "Donovan"
   },
   {
     "fullName": "Daniel Castro-Lacouture",
@@ -1275,6 +1365,11 @@
     "lastName": "Susskind"
   },
   {
+    "fullName": "Daniel Terry",
+    "firstName": "Daniel",
+    "lastName": "Terry"
+  },
+  {
     "fullName": "Daniel Weisfield",
     "firstName": "Daniel",
     "lastName": "Weisfield"
@@ -1298,6 +1393,11 @@
     "fullName": "Daria Klosova",
     "firstName": "Daria",
     "lastName": "Klosova"
+  },
+  {
+    "fullName": "Daria Loi",
+    "firstName": "Daria",
+    "lastName": "Loi"
   },
   {
     "fullName": "Darlene Russ-Eft",
@@ -1348,6 +1448,11 @@
     "fullName": "David Dorn",
     "firstName": "David",
     "lastName": "Dorn"
+  },
+  {
+    "fullName": "David Evans",
+    "firstName": "David",
+    "lastName": "Evans"
   },
   {
     "fullName": "David F Feldon",
@@ -1495,6 +1600,11 @@
     "lastName": "Alderman"
   },
   {
+    "fullName": "Dennis E Mithaug",
+    "firstName": "Dennis E",
+    "lastName": "Mithaug"
+  },
+  {
     "fullName": "Dennis J Hazelett",
     "firstName": "Dennis J",
     "lastName": "Hazelett"
@@ -1503,11 +1613,6 @@
     "fullName": "Dennis Wixon",
     "firstName": "Dennis",
     "lastName": "Wixon"
-  },
-  {
-    "fullName": "Department of Economic {United Nations",
-    "firstName": "Department of Economic {United",
-    "lastName": "Nations"
   },
   {
     "fullName": "Derek Thompson",
@@ -1523,6 +1628,11 @@
     "fullName": "Diana Laurillard",
     "firstName": "Diana",
     "lastName": "Laurillard"
+  },
+  {
+    "fullName": "Diane Coyle",
+    "firstName": "Diane",
+    "lastName": "Coyle"
   },
   {
     "fullName": "Dieter Hess",
@@ -1541,8 +1651,8 @@
   },
   {
     "fullName": "Diyana Syafiqah Binti Abd Razak",
-    "firstName": "Diyana Syafiqah Binti Abd",
-    "lastName": "Razak"
+    "firstName": "Diyana Syafiqah Binti",
+    "lastName": "Abd Razak"
   },
   {
     "fullName": "Domitile Lourdeaux",
@@ -1650,6 +1760,11 @@
     "lastName": "Dunham-Jones"
   },
   {
+    "fullName": "Emma Puerari",
+    "firstName": "Emma",
+    "lastName": "Puerari"
+  },
+  {
     "fullName": "Emma Viklund",
     "firstName": "Emma",
     "lastName": "Viklund"
@@ -1740,14 +1855,14 @@
     "lastName": "Andrews"
   },
   {
-    "fullName": "Examinations Regulation}",
-    "firstName": "Examinations",
-    "lastName": "Regulation}"
-  },
-  {
     "fullName": "Ezra Klein",
     "firstName": "Ezra",
     "lastName": "Klein"
+  },
+  {
+    "fullName": "Fabio Terra",
+    "firstName": "Fabio",
+    "lastName": "Terra"
   },
   {
     "fullName": "Faris Elghaish",
@@ -1775,6 +1890,11 @@
     "lastName": "Qin"
   },
   {
+    "fullName": "Felice D Billups",
+    "firstName": "Felice D",
+    "lastName": "Billups"
+  },
+  {
     "fullName": "Felicitas Beier",
     "firstName": "Felicitas",
     "lastName": "Beier"
@@ -1783,6 +1903,11 @@
     "fullName": "Felix Oberholzer-Gee",
     "firstName": "Felix",
     "lastName": "Oberholzer-Gee"
+  },
+  {
+    "fullName": "Fernanda Herrera",
+    "firstName": "Fernanda",
+    "lastName": "Herrera"
   },
   {
     "fullName": "Filipe Barbosa",
@@ -1798,6 +1923,11 @@
     "fullName": "Fiona Anderson-Gough",
     "firstName": "Fiona",
     "lastName": "Anderson-Gough"
+  },
+  {
+    "fullName": "Fiona MacCarthy",
+    "firstName": "Fiona",
+    "lastName": "MacCarthy"
   },
   {
     "fullName": "Fiona Murphy",
@@ -1825,6 +1955,11 @@
     "lastName": "Chu"
   },
   {
+    "fullName": "Frances Ambler",
+    "firstName": "Frances",
+    "lastName": "Ambler"
+  },
+  {
     "fullName": "Francesco Pomponi",
     "firstName": "Francesco",
     "lastName": "Pomponi"
@@ -1838,6 +1973,11 @@
     "fullName": "Frank Biocca",
     "firstName": "Frank",
     "lastName": "Biocca"
+  },
+  {
+    "fullName": "Frank Levy",
+    "firstName": "Frank",
+    "lastName": "Levy"
   },
   {
     "fullName": "Frank R Lichtenberg",
@@ -1875,9 +2015,19 @@
     "lastName": "Wild"
   },
   {
+    "fullName": "Fumio Kishino",
+    "firstName": "Fumio",
+    "lastName": "Kishino"
+  },
+  {
     "fullName": "Gail Ross",
     "firstName": "Gail",
     "lastName": "Ross"
+  },
+  {
+    "fullName": "Gaile S Cannella",
+    "firstName": "Gaile S",
+    "lastName": "Cannella"
   },
   {
     "fullName": "Galina Churkina",
@@ -2115,14 +2265,14 @@
     "lastName": "Schellnhuber"
   },
   {
+    "fullName": "Hans Meij",
+    "firstName": "Hans",
+    "lastName": "Meij"
+  },
+  {
     "fullName": "Hans Rosling",
     "firstName": "Hans",
     "lastName": "Rosling"
-  },
-  {
-    "fullName": "Hans van der Meij",
-    "firstName": "Hans van der",
-    "lastName": "Meij"
   },
   {
     "fullName": "Harrison Kyriacou",
@@ -2180,6 +2330,11 @@
     "lastName": "Jeong"
   },
   {
+    "fullName": "Helen Gordon",
+    "firstName": "Helen",
+    "lastName": "Gordon"
+  },
+  {
     "fullName": "Helen Rainbird",
     "firstName": "Helen",
     "lastName": "Rainbird"
@@ -2213,6 +2368,11 @@
     "fullName": "Henny P A Boshuizen",
     "firstName": "Henny P A",
     "lastName": "Boshuizen"
+  },
+  {
+    "fullName": "Henry L Roediger",
+    "firstName": "Henry L",
+    "lastName": "Roediger"
   },
   {
     "fullName": "Henry Ma",
@@ -2278,11 +2438,6 @@
     "fullName": "Hyoungkwan Kim",
     "firstName": "Hyoungkwan",
     "lastName": "Kim"
-  },
-  {
-    "fullName": "III, Henry L Roediger",
-    "firstName": "III, Henry L",
-    "lastName": "Roediger"
   },
   {
     "fullName": "Ian Billington",
@@ -2365,6 +2520,11 @@
     "lastName": "Goulding"
   },
   {
+    "fullName": "Jack S Goulding",
+    "firstName": "Jack S",
+    "lastName": "Goulding"
+  },
+  {
     "fullName": "Jack Shen-Kuen Chang",
     "firstName": "Jack Shen-Kuen",
     "lastName": "Chang"
@@ -2410,6 +2570,11 @@
     "lastName": "Heppelmann"
   },
   {
+    "fullName": "James Steinhoff",
+    "firstName": "James",
+    "lastName": "Steinhoff"
+  },
+  {
     "fullName": "James Wilson",
     "firstName": "James",
     "lastName": "Wilson"
@@ -2453,6 +2618,11 @@
     "fullName": "Janice D Aurini",
     "firstName": "Janice D",
     "lastName": "Aurini"
+  },
+  {
+    "fullName": "Janine M Benyus",
+    "firstName": "Janine M",
+    "lastName": "Benyus"
   },
   {
     "fullName": "Jarg Bergold",
@@ -2570,6 +2740,11 @@
     "lastName": "Schuetz"
   },
   {
+    "fullName": "Jens Rennstam",
+    "firstName": "Jens",
+    "lastName": "Rennstam"
+  },
+  {
     "fullName": "Jeremy Benson",
     "firstName": "Jeremy",
     "lastName": "Benson"
@@ -2580,13 +2755,18 @@
     "lastName": "Bailenson"
   },
   {
+    "fullName": "Jeremy Rifkin",
+    "firstName": "Jeremy",
+    "lastName": "Rifkin"
+  },
+  {
     "fullName": "Jerker Lessing",
     "firstName": "Jerker",
     "lastName": "Lessing"
   },
   {
-    "fullName": "Jeroen J G van Merriënboer",
-    "firstName": "Jeroen J G van",
+    "fullName": "Jeroen J G Merriënboer",
+    "firstName": "Jeroen J G",
     "lastName": "Merriënboer"
   },
   {
@@ -2618,6 +2798,16 @@
     "fullName": "Jiansong Zhang",
     "firstName": "Jiansong",
     "lastName": "Zhang"
+  },
+  {
+    "fullName": "Jill Treanor",
+    "firstName": "Jill",
+    "lastName": "Treanor"
+  },
+  {
+    "fullName": "Jim Blascovich",
+    "firstName": "Jim",
+    "lastName": "Blascovich"
   },
   {
     "fullName": "Jim Butler",
@@ -2653,6 +2843,11 @@
     "fullName": "Jinjuan Heidi Feng",
     "firstName": "Jinjuan Heidi",
     "lastName": "Feng"
+  },
+  {
+    "fullName": "Jinsoo Park",
+    "firstName": "Jinsoo",
+    "lastName": "Park"
   },
   {
     "fullName": "Joan Ryder",
@@ -2725,6 +2920,11 @@
     "lastName": "Kennedy"
   },
   {
+    "fullName": "John Hassard",
+    "firstName": "John",
+    "lastName": "Hassard"
+  },
+  {
     "fullName": "John J Ratey",
     "firstName": "John J",
     "lastName": "Ratey"
@@ -2738,6 +2938,11 @@
     "fullName": "John Lofland",
     "firstName": "John",
     "lastName": "Lofland"
+  },
+  {
+    "fullName": "John M Drake",
+    "firstName": "John M",
+    "lastName": "Drake"
   },
   {
     "fullName": "John Macarthur",
@@ -2781,8 +2986,8 @@
   },
   {
     "fullName": "John Van Maanen",
-    "firstName": "John Van",
-    "lastName": "Maanen"
+    "firstName": "John",
+    "lastName": "Van Maanen"
   },
   {
     "fullName": "John Zeratsky",
@@ -2875,8 +3080,8 @@
     "lastName": "Ryan-Collins"
   },
   {
-    "fullName": "Joshua Barbour",
-    "firstName": "Joshua",
+    "fullName": "Joshua B Barbour",
+    "firstName": "Joshua B",
     "lastName": "Barbour"
   },
   {
@@ -2893,6 +3098,11 @@
     "fullName": "Juanru Wang",
     "firstName": "Juanru",
     "lastName": "Wang"
+  },
+  {
+    "fullName": "Judith Bell",
+    "firstName": "Judith",
+    "lastName": "Bell"
   },
   {
     "fullName": "Judith Glaesser",
@@ -2950,6 +3160,11 @@
     "lastName": "Werfel"
   },
   {
+    "fullName": "Justin Zobel",
+    "firstName": "Justin",
+    "lastName": "Zobel"
+  },
+  {
     "fullName": "Jürgen Seifried",
     "firstName": "Jürgen",
     "lastName": "Seifried"
@@ -2958,6 +3173,11 @@
     "fullName": "K Alexander",
     "firstName": "K",
     "lastName": "Alexander"
+  },
+  {
+    "fullName": "K Anders Ericsson",
+    "firstName": "K Anders",
+    "lastName": "Ericsson"
   },
   {
     "fullName": "Kahina Amokrane",
@@ -3025,9 +3245,19 @@
     "lastName": "Vibæk"
   },
   {
+    "fullName": "Kate Barker",
+    "firstName": "Kate",
+    "lastName": "Barker"
+  },
+  {
     "fullName": "Kate Hardin",
     "firstName": "Kate",
     "lastName": "Hardin"
+  },
+  {
+    "fullName": "Kate Henderson",
+    "firstName": "Kate",
+    "lastName": "Henderson"
   },
   {
     "fullName": "Katharine Logan",
@@ -3111,8 +3341,8 @@
   },
   {
     "fullName": "Kim LaScola Needy",
-    "firstName": "Kim LaScola",
-    "lastName": "Needy"
+    "firstName": "Kim",
+    "lastName": "LaScola Needy"
   },
   {
     "fullName": "Kimberly A McCabe",
@@ -3245,9 +3475,14 @@
     "lastName": "Farha"
   },
   {
+    "fullName": "Leketi Makalela",
+    "firstName": "Leketi",
+    "lastName": "Makalela"
+  },
+  {
     "fullName": "Lelli Van Den Einde",
-    "firstName": "Lelli Van Den",
-    "lastName": "Einde"
+    "firstName": "Lelli",
+    "lastName": "Van Den Einde"
   },
   {
     "fullName": "Lena E Bygballe",
@@ -3340,11 +3575,6 @@
     "lastName": "Ni"
   },
   {
-    "fullName": "Local Government}",
-    "firstName": "Local",
-    "lastName": "Government}"
-  },
-  {
     "fullName": "Loek Nieuwenhuis",
     "firstName": "Loek",
     "lastName": "Nieuwenhuis"
@@ -3395,6 +3625,11 @@
     "lastName": "Rivest"
   },
   {
+    "fullName": "Louise Eccles",
+    "firstName": "Louise",
+    "lastName": "Eccles"
+  },
+  {
     "fullName": "Luanne Kadlub",
     "firstName": "Luanne",
     "lastName": "Kadlub"
@@ -3440,6 +3675,11 @@
     "lastName": "Turner"
   },
   {
+    "fullName": "Lyn Garner",
+    "firstName": "Lyn",
+    "lastName": "Garner"
+  },
+  {
     "fullName": "Lyn H Lofland",
     "firstName": "Lyn H",
     "lastName": "Lofland"
@@ -3458,6 +3698,11 @@
     "fullName": "Lynn Pearson",
     "firstName": "Lynn",
     "lastName": "Pearson"
+  },
+  {
+    "fullName": "Maarit Hannele Virolainen",
+    "firstName": "Maarit Hannele",
+    "lastName": "Virolainen"
   },
   {
     "fullName": "Madeleine Ngo",
@@ -3485,9 +3730,24 @@
     "lastName": "Olson"
   },
   {
+    "fullName": "Manuel Blanco Lage",
+    "firstName": "Manuel Blanco",
+    "lastName": "Lage"
+  },
+  {
+    "fullName": "Manuel Rodrigo O Cabrera",
+    "firstName": "Manuel Rodrigo",
+    "lastName": "O Cabrera"
+  },
+  {
     "fullName": "Manuel Zafra Solas",
     "firstName": "Manuel Zafra",
     "lastName": "Solas"
+  },
+  {
+    "fullName": "Marc L Silver",
+    "firstName": "Marc L",
+    "lastName": "Silver"
   },
   {
     "fullName": "Marc Prensky",
@@ -3518,6 +3778,11 @@
     "fullName": "Mari Koivisto",
     "firstName": "Mari",
     "lastName": "Koivisto"
+  },
+  {
+    "fullName": "Maria Isabel da S Leme",
+    "firstName": "Maria Isabel da S",
+    "lastName": "Leme"
   },
   {
     "fullName": "Maria João Ribeirinho",
@@ -3558,6 +3823,11 @@
     "fullName": "Mario Galic",
     "firstName": "Mario",
     "lastName": "Galic"
+  },
+  {
+    "fullName": "Mario Salvadori",
+    "firstName": "Mario",
+    "lastName": "Salvadori"
   },
   {
     "fullName": "Mario Wolf",
@@ -3623,6 +3893,11 @@
     "fullName": "Mark Lawson",
     "firstName": "Mark",
     "lastName": "Lawson"
+  },
+  {
+    "fullName": "Mark Sharp",
+    "firstName": "Mark",
+    "lastName": "Sharp"
   },
   {
     "fullName": "Mark Stuart",
@@ -3780,6 +4055,11 @@
     "lastName": "Pilz"
   },
   {
+    "fullName": "Mauri Kantola",
+    "firstName": "Mauri",
+    "lastName": "Kantola"
+  },
+  {
     "fullName": "Maury Klein",
     "firstName": "Maury",
     "lastName": "Klein"
@@ -3850,6 +4130,11 @@
     "lastName": "Buehler"
   },
   {
+    "fullName": "Michael D Giardina",
+    "firstName": "Michael D",
+    "lastName": "Giardina"
+  },
+  {
     "fullName": "Michael E Porter",
     "firstName": "Michael E",
     "lastName": "Porter"
@@ -3870,9 +4155,19 @@
     "lastName": "Goller"
   },
   {
+    "fullName": "Michael Jin",
+    "firstName": "Michael",
+    "lastName": "Jin"
+  },
+  {
     "fullName": "Michael Kluck",
     "firstName": "Michael",
     "lastName": "Kluck"
+  },
+  {
+    "fullName": "Michael Lyons",
+    "firstName": "Michael",
+    "lastName": "Lyons"
   },
   {
     "fullName": "Michael Nitsche",
@@ -3883,6 +4178,11 @@
     "fullName": "Michael Onyia",
     "firstName": "Michael",
     "lastName": "Onyia"
+  },
+  {
+    "fullName": "Michael Polanyi",
+    "firstName": "Michael",
+    "lastName": "Polanyi"
   },
   {
     "fullName": "Michael Rüßmann",
@@ -4000,11 +4300,6 @@
     "lastName": "Sutrisna"
   },
   {
-    "fullName": "Monuments Commission for England}",
-    "firstName": "Monuments Commission for",
-    "lastName": "England}"
-  },
-  {
     "fullName": "Morgan Lizop",
     "firstName": "Morgan",
     "lastName": "Lizop"
@@ -4115,6 +4410,21 @@
     "lastName": "Jewson"
   },
   {
+    "fullName": "Nick Raynsford",
+    "firstName": "Nick",
+    "lastName": "Raynsford"
+  },
+  {
+    "fullName": "Nick Yee",
+    "firstName": "Nick",
+    "lastName": "Yee"
+  },
+  {
+    "fullName": "Nicolas Marine",
+    "firstName": "Nicolas",
+    "lastName": "Marine"
+  },
+  {
     "fullName": "Nicole Cantore",
     "firstName": "Nicole",
     "lastName": "Cantore"
@@ -4123,6 +4433,11 @@
     "fullName": "Nicole Detsimas",
     "firstName": "Nicole",
     "lastName": "Detsimas"
+  },
+  {
+    "fullName": "Nicole Lundblad",
+    "firstName": "Nicole",
+    "lastName": "Lundblad"
   },
   {
     "fullName": "Nicole N Woods",
@@ -4158,11 +4473,6 @@
     "fullName": "Norman K Denzin",
     "firstName": "Norman K",
     "lastName": "Denzin"
-  },
-  {
-    "fullName": "Office of Planning, Evaluation {United States Department of Education",
-    "firstName": "Office of Planning, Evaluation {United States Department of",
-    "lastName": "Education"
   },
   {
     "fullName": "Ola Rosling",
@@ -4225,6 +4535,11 @@
     "lastName": "Hopkins"
   },
   {
+    "fullName": "Oya Atalay Franck",
+    "firstName": "Oya Atalay",
+    "lastName": "Franck"
+  },
+  {
     "fullName": "P Zimmons",
     "firstName": "P",
     "lastName": "Zimmons"
@@ -4265,6 +4580,11 @@
     "lastName": "Lucas"
   },
   {
+    "fullName": "Patricia Lucille Smith",
+    "firstName": "Patricia Lucille",
+    "lastName": "Smith"
+  },
+  {
     "fullName": "Patrick Jermann",
     "firstName": "Patrick",
     "lastName": "Jermann"
@@ -4283,6 +4603,16 @@
     "fullName": "Paul A Kirschner",
     "firstName": "Paul A",
     "lastName": "Kirschner"
+  },
+  {
+    "fullName": "Paul A Sommer",
+    "firstName": "Paul A",
+    "lastName": "Sommer"
+  },
+  {
+    "fullName": "Paul Attewell",
+    "firstName": "Paul",
+    "lastName": "Attewell"
   },
   {
     "fullName": "Paul Ayres",
@@ -4310,9 +4640,24 @@
     "lastName": "Clifton"
   },
   {
+    "fullName": "Paul Forrester",
+    "firstName": "Paul",
+    "lastName": "Forrester"
+  },
+  {
+    "fullName": "Paul Gruba",
+    "firstName": "Paul",
+    "lastName": "Gruba"
+  },
+  {
     "fullName": "Paul Hager",
     "firstName": "Paul",
     "lastName": "Hager"
+  },
+  {
+    "fullName": "Paul J Armstrong",
+    "firstName": "Paul J",
+    "lastName": "Armstrong"
   },
   {
     "fullName": "Paul Krugman",
@@ -4328,6 +4673,11 @@
     "fullName": "Paul M Goodrum",
     "firstName": "Paul M",
     "lastName": "Goodrum"
+  },
+  {
+    "fullName": "Paul Milgram",
+    "firstName": "Paul",
+    "lastName": "Milgram"
   },
   {
     "fullName": "Paul Solman",
@@ -4480,19 +4830,9 @@
     "lastName": "Xiang"
   },
   {
-    "fullName": "Policy Policy Development",
-    "firstName": "Policy Policy",
-    "lastName": "Development"
-  },
-  {
     "fullName": "Prakash Nepal",
     "firstName": "Prakash",
     "lastName": "Nepal"
-  },
-  {
-    "fullName": "Program Studies Service}",
-    "firstName": "Program Studies",
-    "lastName": "Service}"
   },
   {
     "fullName": "Prompt Udomdech",
@@ -4555,6 +4895,11 @@
     "lastName": "Dreischmeier"
   },
   {
+    "fullName": "Ralf T Krampe",
+    "firstName": "Ralf T",
+    "lastName": "Krampe"
+  },
+  {
     "fullName": "Ralph W Liebing",
     "firstName": "Ralph W",
     "lastName": "Liebing"
@@ -4605,11 +4950,6 @@
     "lastName": "Gudauskas"
   },
   {
-    "fullName": "Research}",
-    "firstName": "",
-    "lastName": "Research}"
-  },
-  {
     "fullName": "Ricardo Eiris",
     "firstName": "Ricardo",
     "lastName": "Eiris"
@@ -4658,6 +4998,11 @@
     "fullName": "Richard Halverson",
     "firstName": "Richard",
     "lastName": "Halverson"
+  },
+  {
+    "fullName": "Richard J Murnane",
+    "firstName": "Richard J",
+    "lastName": "Murnane"
   },
   {
     "fullName": "Richard L Tucker",
@@ -4790,8 +5135,8 @@
     "lastName": "Klemke"
   },
   {
-    "fullName": "Romain de Laubier",
-    "firstName": "Romain de",
+    "fullName": "Romain Laubier",
+    "firstName": "Romain",
     "lastName": "Laubier"
   },
   {
@@ -4915,6 +5260,11 @@
     "lastName": "Walters"
   },
   {
+    "fullName": "Salvatore T March",
+    "firstName": "Salvatore T",
+    "lastName": "March"
+  },
+  {
     "fullName": "Sam Kubba",
     "firstName": "Sam",
     "lastName": "Kubba"
@@ -5035,6 +5385,11 @@
     "lastName": "Kalhori"
   },
   {
+    "fullName": "Sharon Marie Scollard",
+    "firstName": "Sharon Marie",
+    "lastName": "Scollard"
+  },
+  {
     "fullName": "Shelley Evenson",
     "firstName": "Shelley",
     "lastName": "Evenson"
@@ -5105,14 +5460,14 @@
     "lastName": "Kalyuga"
   },
   {
-    "fullName": "Social Affairs}",
-    "firstName": "Social",
-    "lastName": "Affairs}"
-  },
-  {
     "fullName": "Son Do-Lenh",
     "firstName": "Son",
     "lastName": "Do-Lenh"
+  },
+  {
+    "fullName": "Sonali Basak",
+    "firstName": "Sonali",
+    "lastName": "Basak"
   },
   {
     "fullName": "Song Ju",
@@ -5143,6 +5498,11 @@
     "fullName": "Sophie Lumley",
     "firstName": "Sophie",
     "lastName": "Lumley"
+  },
+  {
+    "fullName": "Sowmya Parthasarathy",
+    "firstName": "Sowmya",
+    "lastName": "Parthasarathy"
   },
   {
     "fullName": "Stacie Billington",
@@ -5230,6 +5590,16 @@
     "lastName": "Dubner"
   },
   {
+    "fullName": "Stephen Procter",
+    "firstName": "Stephen",
+    "lastName": "Procter"
+  },
+  {
+    "fullName": "Stephen Waters",
+    "firstName": "Stephen",
+    "lastName": "Waters"
+  },
+  {
     "fullName": "Steve Cole",
     "firstName": "Steve",
     "lastName": "Cole"
@@ -5271,13 +5641,23 @@
   },
   {
     "fullName": "Su Jin Son",
-    "firstName": "Su Jin",
-    "lastName": "Son"
+    "firstName": "Su",
+    "lastName": "Jin Son"
   },
   {
     "fullName": "Subbarao Kambhampati",
     "firstName": "Subbarao",
     "lastName": "Kambhampati"
+  },
+  {
+    "fullName": "Sudha Ram",
+    "firstName": "Sudha",
+    "lastName": "Ram"
+  },
+  {
+    "fullName": "Sun Joo (grace) Ahn",
+    "firstName": "Sun Joo (grace)",
+    "lastName": "Ahn"
   },
   {
     "fullName": "Sungjin Kim",
@@ -5360,8 +5740,8 @@
     "lastName": "Rice"
   },
   {
-    "fullName": "Tamara van Gog",
-    "firstName": "Tamara van",
+    "fullName": "Tamara Gog",
+    "firstName": "Tamara",
     "lastName": "Gog"
   },
   {
@@ -5455,6 +5835,11 @@
     "lastName": "Zupanci"
   },
   {
+    "fullName": "Tillman J Ragan",
+    "firstName": "Tillman J",
+    "lastName": "Ragan"
+  },
+  {
     "fullName": "Tilly Mortimore",
     "firstName": "Tilly",
     "lastName": "Mortimore"
@@ -5493,6 +5878,11 @@
     "fullName": "Timo Kuula",
     "firstName": "Timo",
     "lastName": "Kuula"
+  },
+  {
+    "fullName": "Timothy Kuhn",
+    "firstName": "Timothy",
+    "lastName": "Kuhn"
   },
   {
     "fullName": "Timothy Schuler",
@@ -5570,11 +5960,6 @@
     "lastName": "Schmetterer"
   },
   {
-    "fullName": "Urban Development}",
-    "firstName": "Urban",
-    "lastName": "Development}"
-  },
-  {
     "fullName": "Val Sirbu",
     "firstName": "Val",
     "lastName": "Sirbu"
@@ -5620,6 +6005,11 @@
     "lastName": "Ahmed"
   },
   {
+    "fullName": "Victoria Clarke",
+    "firstName": "Victoria",
+    "lastName": "Clarke"
+  },
+  {
     "fullName": "Vincent Donche",
     "firstName": "Vincent",
     "lastName": "Donche"
@@ -5628,6 +6018,11 @@
     "fullName": "Vincent-Wayne Mitchell",
     "firstName": "Vincent-Wayne",
     "lastName": "Mitchell"
+  },
+  {
+    "fullName": "Virginia Braun",
+    "firstName": "Virginia",
+    "lastName": "Braun"
   },
   {
     "fullName": "Virginia Minni",
@@ -5668,6 +6063,11 @@
     "fullName": "Wei Cheng",
     "firstName": "Wei",
     "lastName": "Cheng"
+  },
+  {
+    "fullName": "Wei Yang",
+    "firstName": "Wei",
+    "lastName": "Yang"
   },
   {
     "fullName": "Weihan Lin",
@@ -5841,8 +6241,8 @@
   },
   {
     "fullName": "Yves Van Durme",
-    "firstName": "Yves Van",
-    "lastName": "Durme"
+    "firstName": "Yves",
+    "lastName": "Van Durme"
   },
   {
     "fullName": "Yvonna S Lincoln",
@@ -5895,34 +6295,294 @@
     "lastName": "Strukova"
   },
   {
-    "fullName": "{Associated Builders",
-    "firstName": "{Associated",
-    "lastName": "Builders"
+    "fullName": "{Armstrong Laboratory Air Force Materiel Command}",
+    "firstName": "",
+    "lastName": "{Armstrong Laboratory Air Force Materiel Command}"
   },
   {
-    "fullName": "{Department for Communities",
-    "firstName": "{Department for",
-    "lastName": "Communities"
+    "fullName": "{Associated Builders and Contractors}",
+    "firstName": "",
+    "lastName": "{Associated Builders and Contractors}"
   },
   {
-    "fullName": "{Historic Buildings",
-    "firstName": "{Historic",
-    "lastName": "Buildings"
+    "fullName": "{Associated General Contractors}",
+    "firstName": "",
+    "lastName": "{Associated General Contractors}"
   },
   {
-    "fullName": "{Office of Policy Development",
-    "firstName": "{Office of Policy",
-    "lastName": "Development"
+    "fullName": "{Association of British Theatre Technicians}",
+    "firstName": "",
+    "lastName": "{Association of British Theatre Technicians}"
   },
   {
-    "fullName": "{Office of Qualifications",
-    "firstName": "{Office of",
-    "lastName": "Qualifications"
+    "fullName": "{BBC News}",
+    "firstName": "",
+    "lastName": "{BBC News}"
   },
   {
-    "fullName": "{US Department of Housing",
-    "firstName": "{US Department of",
-    "lastName": "Housing"
+    "fullName": "{Berkeley Graduate Division}",
+    "firstName": "",
+    "lastName": "{Berkeley Graduate Division}"
+  },
+  {
+    "fullName": "{Bureau of Labor Statistics}",
+    "firstName": "",
+    "lastName": "{Bureau of Labor Statistics}"
+  },
+  {
+    "fullName": "{CITB}",
+    "firstName": "",
+    "lastName": "{CITB}"
+  },
+  {
+    "fullName": "{City of Lakewood}",
+    "firstName": "",
+    "lastName": "{City of Lakewood}"
+  },
+  {
+    "fullName": "{Council of the European Union}",
+    "firstName": "",
+    "lastName": "{Council of the European Union}"
+  },
+  {
+    "fullName": "{Department for Communities and Local Government}",
+    "firstName": "",
+    "lastName": "{Department for Communities and Local Government}"
+  },
+  {
+    "fullName": "{Department of Economic History}",
+    "firstName": "",
+    "lastName": "{Department of Economic History}"
+  },
+  {
+    "fullName": "{Dodge Data & Analytics}",
+    "firstName": "",
+    "lastName": "{Dodge Data & Analytics}"
+  },
+  {
+    "fullName": "{Editorial}",
+    "firstName": "",
+    "lastName": "{Editorial}"
+  },
+  {
+    "fullName": "{European Commission, Directorate-General for Education, Youth, Sport and Culture}",
+    "firstName": "",
+    "lastName": "{European Commission, Directorate-General for Education, Youth, Sport and Culture}"
+  },
+  {
+    "fullName": "{Factory OS}",
+    "firstName": "",
+    "lastName": "{Factory OS}"
+  },
+  {
+    "fullName": "{Federal Highway Administration}",
+    "firstName": "",
+    "lastName": "{Federal Highway Administration}"
+  },
+  {
+    "fullName": "{Froebel Trust}",
+    "firstName": "",
+    "lastName": "{Froebel Trust}"
+  },
+  {
+    "fullName": "{GE Appliances Pressroom}",
+    "firstName": "",
+    "lastName": "{GE Appliances Pressroom}"
+  },
+  {
+    "fullName": "{Global Infrastructure Hub}",
+    "firstName": "",
+    "lastName": "{Global Infrastructure Hub}"
+  },
+  {
+    "fullName": "{HUD User}",
+    "firstName": "",
+    "lastName": "{HUD User}"
+  },
+  {
+    "fullName": "{Historic Buildings and Monuments Commission for England}",
+    "firstName": "",
+    "lastName": "{Historic Buildings and Monuments Commission for England}"
+  },
+  {
+    "fullName": "{House of Lords}",
+    "firstName": "",
+    "lastName": "{House of Lords}"
+  },
+  {
+    "fullName": "{International Labour Office}",
+    "firstName": "",
+    "lastName": "{International Labour Office}"
+  },
+  {
+    "fullName": "{MIT Task Force on the Work of the Future}",
+    "firstName": "",
+    "lastName": "{MIT Task Force on the Work of the Future}"
+  },
+  {
+    "fullName": "{MIT Work of the Future}",
+    "firstName": "",
+    "lastName": "{MIT Work of the Future}"
+  },
+  {
+    "fullName": "{Ministry of Housing, Communities and Local Government}",
+    "firstName": "",
+    "lastName": "{Ministry of Housing, Communities and Local Government}"
+  },
+  {
+    "fullName": "{NBCUniversal News Group [CNBC]}",
+    "firstName": "",
+    "lastName": "{NBCUniversal News Group [CNBC]}"
+  },
+  {
+    "fullName": "{NCASI}",
+    "firstName": "",
+    "lastName": "{NCASI}"
+  },
+  {
+    "fullName": "{Office for National Statistics}",
+    "firstName": "",
+    "lastName": "{Office for National Statistics}"
+  },
+  {
+    "fullName": "{Office of Policy Development and Research}",
+    "firstName": "",
+    "lastName": "{Office of Policy Development and Research}"
+  },
+  {
+    "fullName": "{Office of Qualifications and Examinations Regulation}",
+    "firstName": "",
+    "lastName": "{Office of Qualifications and Examinations Regulation}"
+  },
+  {
+    "fullName": "{Planet Money}",
+    "firstName": "",
+    "lastName": "{Planet Money}"
+  },
+  {
+    "fullName": "{Prime Minister's Office}",
+    "firstName": "",
+    "lastName": "{Prime Minister's Office}"
+  },
+  {
+    "fullName": "{Propeller}",
+    "firstName": "",
+    "lastName": "{Propeller}"
+  },
+  {
+    "fullName": "{Redshift}",
+    "firstName": "",
+    "lastName": "{Redshift}"
+  },
+  {
+    "fullName": "{Science Museum}",
+    "firstName": "",
+    "lastName": "{Science Museum}"
+  },
+  {
+    "fullName": "{Shang Gao (Lecturer in construction management)}",
+    "firstName": "",
+    "lastName": "{Shang Gao (Lecturer in construction management)}"
+  },
+  {
+    "fullName": "{Tallinn University}",
+    "firstName": "",
+    "lastName": "{Tallinn University}"
+  },
+  {
+    "fullName": "{The Data Team}",
+    "firstName": "",
+    "lastName": "{The Data Team}"
+  },
+  {
+    "fullName": "{The Economist}",
+    "firstName": "",
+    "lastName": "{The Economist}"
+  },
+  {
+    "fullName": "{UNESCO-UNEVOC}",
+    "firstName": "",
+    "lastName": "{UNESCO-UNEVOC}"
+  },
+  {
+    "fullName": "{US Department of Housing and Urban Development}",
+    "firstName": "",
+    "lastName": "{US Department of Housing and Urban Development}"
+  },
+  {
+    "fullName": "{USG Corporation}",
+    "firstName": "",
+    "lastName": "{USG Corporation}"
+  },
+  {
+    "fullName": "{United Brotherhood of Carpenters}",
+    "firstName": "",
+    "lastName": "{United Brotherhood of Carpenters}"
+  },
+  {
+    "fullName": "{United Nations, Department of Economic and Social Affairs}",
+    "firstName": "",
+    "lastName": "{United Nations, Department of Economic and Social Affairs}"
+  },
+  {
+    "fullName": "{United Nations}",
+    "firstName": "",
+    "lastName": "{United Nations}"
+  },
+  {
+    "fullName": "{United States Census Bureau}",
+    "firstName": "",
+    "lastName": "{United States Census Bureau}"
+  },
+  {
+    "fullName": "{United States Chamber of Commerce}",
+    "firstName": "",
+    "lastName": "{United States Chamber of Commerce}"
+  },
+  {
+    "fullName": "{United States Department of Education, Office of Planning, Evaluation and Policy Development, Policy and Program Studies Service}",
+    "firstName": "",
+    "lastName": "{United States Department of Education, Office of Planning, Evaluation and Policy Development, Policy and Program Studies Service}"
+  },
+  {
+    "fullName": "{United States Department of Labor}",
+    "firstName": "",
+    "lastName": "{United States Department of Labor}"
+  },
+  {
+    "fullName": "{United States Interagency Council on Homelessness}",
+    "firstName": "",
+    "lastName": "{United States Interagency Council on Homelessness}"
+  },
+  {
+    "fullName": "{Unity Technologies}",
+    "firstName": "",
+    "lastName": "{Unity Technologies}"
+  },
+  {
+    "fullName": "{Valerie Francis (Professor in construction management)}",
+    "firstName": "",
+    "lastName": "{Valerie Francis (Professor in construction management)}"
+  },
+  {
+    "fullName": "{WTF Happened In 1971}",
+    "firstName": "",
+    "lastName": "{WTF Happened In 1971}"
+  },
+  {
+    "fullName": "{Wikipedia contributors}",
+    "firstName": "",
+    "lastName": "{Wikipedia contributors}"
+  },
+  {
+    "fullName": "{World Economic Forum}",
+    "firstName": "",
+    "lastName": "{World Economic Forum}"
+  },
+  {
+    "fullName": "{YouTube Originals}",
+    "firstName": "",
+    "lastName": "{YouTube Originals}"
   },
   {
     "fullName": "Éva Orbán-Mihálykó",

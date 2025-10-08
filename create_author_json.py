@@ -1,41 +1,34 @@
-import bibtexparser
+
 import json
 import re
+from pybtex.database.input import bibtex
+import latexcodec
 
 # --- Configuration ---
 BIBTEX_INPUT_FILE = "regex-tag.bib"
 JSON_OUTPUT_FILE = "authors.json"
 
-def process_author_name(raw_name: str) -> dict | None:
+def process_author_name(person: "pybtex.database.Person") -> dict | None:
     """
-    Cleans and processes a single author's name into a structured dictionary.
-    Handles 'Last, First' and 'First Last' formats.
-    Returns None for institutional authors (those in curly braces).
+    Cleans and processes a single author's name from a pybtex Person object.
+    Returns a structured dictionary.
     """
-    name = re.sub(r'\s+', ' ', raw_name).strip()
-
-    if name.startswith('{') and name.endswith('}'):
-        return None
-
-    if ',' in name:
-        parts = name.split(',', 1)
-        last_name = parts[0].strip()
-        first_name = parts[1].strip()
-        full_name = f"{first_name} {last_name}"
-    else:
-        full_name = name
     
-    name_parts = full_name.split()
-    if not name_parts:
+    first_names = " ".join(person.first_names)
+    middle_names = " ".join(person.middle_names)
+    last_names = " ".join(person.last_names)
+    
+    # Combine names, handling potential multiple parts
+    full_name_parts = [first_names, middle_names, last_names]
+    full_name = " ".join(part for part in full_name_parts if part)
+
+    if not full_name:
         return None
-        
-    last_name = name_parts[-1]
-    first_name = ' '.join(name_parts[:-1])
 
     return {
         "fullName": full_name,
-        "firstName": first_name,
-        "lastName": last_name,
+        "firstName": " ".join([first_names, middle_names]).strip(),
+        "lastName": last_names,
     }
 
 def main():
@@ -44,8 +37,8 @@ def main():
     """
     print(f"Reading BibTeX file: {BIBTEX_INPUT_FILE}")
     try:
-        with open(BIBTEX_INPUT_FILE, 'r', encoding='utf-8') as bibfile:
-            bib_database = bibtexparser.load(bibfile)
+        parser = bibtex.Parser()
+        bib_database = parser.parse_file(BIBTEX_INPUT_FILE)
     except FileNotFoundError:
         print(f"Error: The file '{BIBTEX_INPUT_FILE}' was not found.")
         print("Please make sure the script and the .bib file are in the same directory.")
@@ -53,20 +46,14 @@ def main():
 
     unique_authors = {}
 
-    for entry in bib_database.entries:
-        author_string = entry.get('author') or entry.get('editor')
+    for entry in bib_database.entries.values():
+        persons = entry.persons.get('author') or entry.persons.get('editor')
         
-        if not author_string:
+        if not persons:
             continue
-        
-        # FIX: Normalize all whitespace (including newlines) to a single space.
-        # This handles multi-line author fields in the .bib file correctly.
-        author_string = " ".join(author_string.split())
 
-        author_list = [author.strip() for author in author_string.split(' and ')]
-
-        for raw_author_name in author_list:
-            processed_author = process_author_name(raw_author_name)
+        for person in persons:
+            processed_author = process_author_name(person)
             
             if processed_author:
                 unique_authors[processed_author['fullName']] = processed_author

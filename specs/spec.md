@@ -19,7 +19,7 @@
 As a researcher and note-taker, I want to automatically create links in my personal knowledge base (PKM) from my academic references and a curated list of keywords, so that I can easily navigate my interconnected notes without manual effort.
 
 ### Acceptance Scenarios
-1. **Given** a BibTeX file with author entries and a directory of Markdown notes, **When** I run the linking tool, **Then** plain-text mentions of author names in my notes are converted into wiki-links (e.g., `[[John Smith]]` or `[[John Smith|Smith]]`).
+1. **Given** a BibLaTeX file with author entries and a directory of Markdown notes, **When** I run the linking tool, **Then** plain-text mentions of author names in my notes are converted into wiki-links (e.g., `[[John Smith]]` or `[[John Smith|Smith]]`).
 2. **Given** a directory of term definition files with YAML frontmatter, **When** I run the keyword generation script, **Then** a `keyword-mapping.csv` is created where each alias correctly maps to its primary term.
 3. **Given** a `keyword-mapping.csv` file and a directory of Markdown notes, **When** I run the keyword linking tool, **Then** those keywords are converted into wiki-links (e.g., `[[Some Concept]]`).
 4. **Given** a note containing an ambiguous acronym like "CHAT", **When** I run the "smart linking" feature, **Then** the term is only linked to "Cultural-Historical Activity Theory" if the surrounding text contains related terms like "Vygotsky" or "Engeström".
@@ -33,7 +33,7 @@ As a researcher and note-taker, I want to automatically create links in my perso
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
-- **FR-001**: System MUST parse a `.bib` BibTeX file to extract author first and last names.
+- **FR-001**: System MUST parse a `.bib` BibLaTeX file using the `pybtex` library to extract author first and last names.
 - **FR-002**: System MUST generate a consolidated `authors.json` file containing a unique, sorted list of all authors.
 - **FR-003**: System MUST allow users to specify directories to scan for notes and the location of data files via a `config.yaml` file.
 - **FR-004**: All script functionalities MUST be executable from a single `main.py` command-line interface.

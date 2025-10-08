@@ -25,6 +25,14 @@
 
 ---
 
+## Phase 1.5: BibLaTeX Migration
+*Goal: Update the project to use pybtex for parsing BibLaTeX files.*
+
+- [ ] T007a: Update `create_author_json.py` to use `pybtex` and `latexcodec` to parse the BibLaTeX file.
+- [ ] T007b: Ensure the author processing logic in `create_author_json.py` correctly handles the output from `pybtex`.
+
+---
+
 ## Phase 2: Tests First (TDD)
 *Goal: Write a failing test for the keyword generation feature before implementing it.*
 
