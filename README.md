@@ -1,26 +1,21 @@
 # BibTeX to PKM Converter
 
-This project provides a Python-based utility to automatically create a network of connections within your Personal Knowledge Management (PKM) system, such as Obsidian. The pipeline works in two stages: 
-1. it parses a master BibTeX file to generate a clean, structured `authors.json` file. 
-2. it uses this JSON file to scan your existing Markdown notes, finding plain-text mentions of authors and converting them into wiki-links (e.g., `John Smith` becomes `[[John Smith]]`) and surname alias links (e.g., `Smith` becomes `[[John Smith|Smith]]`). This retroactively links your notes to your academic sources, creating a densely interconnected knowledge base.
+This project provides a Python-based utility to automatically create a network of connections within your Personal Knowledge Management (PKM) system, such as Obsidian. The pipeline works in multiple stages:
+1.  It parses a master BibLaTeX file to generate a clean, structured `authors.json` file.
+2.  It generates a `keyword-mapping.csv` from a simple text file of your key terms and their aliases.
+3.  It uses these generated files to scan your existing Markdown notes, finding plain-text mentions and converting them into wiki-links (e.g., `John Smith` becomes `[[John Smith]]` or `CLT` becomes `[[Cognitive Load Theory (CLT)|CLT]]`).
+
+This retroactively links your notes to your academic sources and key concepts, creating a densely interconnected knowledge base.
 
 ---
 
 ## ✨ Features
 
--   **Intelligent Author Linking**: A dedicated script scans your existing Markdown notes and automatically converts plain-text author names into wiki-links (e.g., `John Smith` becomes `[[John Smith]]` and `Smith` becomes `[[John Smith|Smith]]`).
--   **Configurable & Extensible**: Uses a `config.yaml` file to easily define which note directories to scan for author linking.
--   **Author Data Export**: Includes a utility to generate a clean, sorted `authors.json` file from your BibTeX library, which can be used by other tools or for data analysis.
-
----
-
-## ⚙️ The Processing Pipeline
-
-The workflow is designed as a multi-step pipeline. You can run the scripts in sequence to take your references from a single `.bib` file to a fully integrated part of your knowledge base.
-
-1.  **Maintain `regex-tag.bib`: This is your single source of truth. All your academic references should be managed here, preferably using a tool like Zotero with the Better BibTeX plugin for easy export.
-2.  **Generate `authors.json` (`create_author_json.py`)**: This script parses your `regex-tag.bib` file and creates a clean, unique, and alphabetized list of all authors. This JSON file acts as a master list for the other scripts.
-3.  **Link Authors in Your Vault (`link_authors.py`)**: This final script uses the `authors.json` master list to scan your personal note directories (defined in `config.yaml`). It finds mentions of authors and intelligently converts them into the correct wiki-links, connecting your thoughts directly to the source material.
+-   **CLI Control**: A single `main.py` entrypoint with flags (`--generate-authors`, `--generate-keywords`, `--link-authors`, etc.) to control the entire pipeline.
+-   **Intelligent Author Linking**: Converts author names into wiki-links, including surname aliases (e.g., `Smith` becomes `[[John Smith|Smith]]`).
+-   **Automatic Keyword & Alias Linking**: Parses a simple list of terms and automatically handles abbreviations in parentheses (e.g., `Cognitive Load Theory (CLT)`). It then finds and links both the full term and the alias, creating piped links where necessary.
+-   **Configurable**: Uses a `config.yaml` file to easily define which note directories to scan.
+-   **Safe & Idempotent**: The linking scripts will not re-link text that is already inside `[[...]]` brackets, so they can be run multiple times safely.
 
 ---
 
@@ -29,7 +24,7 @@ The workflow is designed as a multi-step pipeline. You can run the scripts in se
 ### Prerequisites
 
 -   Python 3.8+
--   A BibTeX management tool (e.g., Zotero) to maintain your `regex-tag.bib` file.
+-   A BibTeX management tool (e.g., Zotero) to maintain your `.bib` file.
 
 ### Installation & Setup
 
@@ -42,67 +37,58 @@ The workflow is designed as a multi-step pipeline. You can run the scripts in se
 2.  **Set up a Virtual Environment** (Recommended)
     ```bash
     # For macOS/Linux
-    python3 -m venv venv
-    source venv/bin/activate
-
-    # For Windows
-    python -m venv venv
-    .\venv\Scripts\activate
+    python3 -m venv .venv
+    source .venv/bin/activate
     ```
 
 3.  **Install Dependencies**
-    You will need to create a `requirements.txt` file.
-
-    **`requirements.txt`:**
-    ```
-    bibtexparser==1.4.3
-    PyYAML==6.0.2
-    ```
-    Then, install the packages:
     ```bash
     pip install -r requirements.txt
     ```
 
 4.  **Configure the Project**
-    -   Copy `config.example.yaml` to `config.yaml` and update the placeholders with your local paths.
-    -   **BibTeX File**: Place your BibTeX file in the root of the project and ensure it is named `regex-tag.bib`. If you use a different name, update the `BIBTEX_INPUT_FILE` variable in `create_author_json.py` and `convert_bibtex.py`.
-    -   **Directories to Scan**: Fill in `tag_extract_directories` for the folders that hold your terminology notes and `scan_directories` for the locations that should be processed by the linking scripts. You can keep the other entries (e.g., `keyword_output_csv`) as-is unless you need a custom output location.
+    -   Copy `config.example.yaml` to `config.yaml`.
+    -   Update `config.yaml` with the absolute path to your notes directory (`scan_directories`).
+    -   Place your BibLaTeX file (e.g., `regex-tag.bib`) in the root of the project.
+    -   Create a text file containing your list of keywords, one per line. Update `term_source_file` in `config.yaml` to point to this file.
 
 ---
 
 ## Usage
 
-Run the scripts from the terminal in the project's root directory.
+All commands are run through `main.py` from the project's root directory.
 
-1.  **Update the Author List** (Run this whenever you add new authors to your `.bib` file)
+```bash
+# View all available commands
+python main.py --help
+```
+
+### Recommended Workflow
+
+1.  **Generate Authors** (Run this whenever you add new authors to your `.bib` file)
     ```bash
-    python create_author_json.py
+    python main.py --generate-authors
     ```
 
-2.  **Generate/Update the Markdown Notes** (Run this to create or update notes from your `.bib` file)
+2.  **Generate Keywords** (Run this when you update your term list)
     ```bash
-    python convert_bibtex.py
+    python main.py --generate-keywords
     ```
 
-3.  **Extract Keyword Mappings** (Run this to build/update `keyword-mapping.csv` from your terminology notes)
+3.  **Link Authors & Keywords** (Run this to link everything in your vault)
     ```bash
-    python tag_extract.py
+    python main.py --link-authors
+    python main.py --link-keywords
     ```
 
-4.  **Link Authors in Your Vault** (Run this to link authors in your other notes)
+4.  **Run All Steps** (A convenient way to do everything at once)
     ```bash
-    python link_authors.py
-    ```
-
-5.  **Link Keywords in Your Vault** (Run this after updating `keyword-mapping.csv` to insert keyword links)
-    ```bash
-    python link_keywords.py
+    python main.py --all
     ```
 
 ---
 
 ## ⚠️ Important Notes
 
--   **Backup Your Vault!** The `link_authors.py` script modifies your Markdown files in place. It is **highly recommended** that you back up your notes or use a version control system like Git before running it.
--   **Surname Ambiguity**: The linking script cannot distinguish between two different authors who share the same last name. For example, if you have authors `John Smith` and `Jane Smith`, a mention of `Smith` will be linked to whichever author appears first in the `authors.json` file. These rare cases will require manual correction.
--   **Idempotency**: The scripts are designed to be safely run multiple times. The `link_authors.py` script will not re-link text that is already inside `[[...]]` brackets.
+-   **Backup Your Vault!** The linking scripts modify your Markdown files in place. It is **highly recommended** that you back up your notes or use a version control system like Git before running them.
+-   **Surname Ambiguity**: The author linking script cannot distinguish between two different authors who share the same last name. These rare cases may require manual correction.

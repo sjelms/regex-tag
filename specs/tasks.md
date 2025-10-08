@@ -49,27 +49,27 @@
 ## Phase 3: Core Implementation & Refactoring
 *Goal: Implement the keyword generation script and refactor the project into the new `src` structure.*
 
-- [ ] T013: Create the script `src/pkm_linker/generate_keywords.py`.
-- [ ] T014: Implement the keyword generation logic in `src/pkm_linker/generate_keywords.py` to make the test from T009 pass. The script must parse the single term file and handle aliases in parentheses.
-- [ ] T015: [P] Move `create_author_json.py` to `src/pkm_linker/create_author_json.py`.
-- [ ] T016: [P] Move `link_authors.py` to `src/pkm_linker/link_authors.py`.
-- [ ] T017: [P] Move `link_keywords.py` to `src/pkm_linker/link_keywords.py` and update it to handle the piped link format `[[LinkTarget|Alias]]` when an alias is found.
-- [ ] T018: Update `main.py` to import all modules from their new locations within `src/pkm_linker/`.
-- [ ] T019: In `main.py`, add the `--generate-keywords` argument and wire it up to call the new `generate_keywords` function.
+- [x] T013: Create the script `src/pkm_linker/generate_keywords.py`.
+- [x] T014: Implement the keyword generation logic in `src/pkm_linker/generate_keywords.py` to make the test from T009 pass. The script must parse the single term file and handle aliases in parentheses.
+- [x] T015: [P] Move `create_author_json.py` to `src/pkm_linker/create_author_json.py`.
+- [x] T016: [P] Move `link_authors.py` to `src/pkm_linker/link_authors.py`.
+- [x] T017: [P] Move `link_keywords.py` to `src/pkm_linker/link_keywords.py` and update it to handle the piped link format `[[LinkTarget|Alias]]` when an alias is found.
+- [x] T018: Update `main.py` to import all modules from their new locations within `src/pkm_linker/`.
+- [x] T019: In `main.py`, add the `--generate-keywords` argument and wire it up to call the new `generate_keywords` function.
 
 ### Phase 3 Checkpoint
-- [ ] T020: Create session worklog in `logs/worklog_YYYY-MM-DD_s4.md`.
-- [ ] T021: Commit all staged changes with the message "feat: Implement keyword generation and refactor project structure".
-- [ ] T022: Push the changes to the remote repository.
+- [x] T020: Create session worklog in `logs/worklog_YYYY-MM-DD_s4.md`.
+- [x] T021: Commit all staged changes with the message "feat: Implement keyword generation and refactor project structure".
+- [x] T022: Push the changes to the remote repository.
 
 ---
 
 ## Phase 4: Polish & Documentation
 *Goal: Clean up the new code and document the new functionality for users.*
 
-- [ ] T023: [P] Add docstrings and type hinting to `src/pkm_linker/generate_keywords.py`.
-- [ ] T024: [P] Update `README.md` to document the new automatic keyword generation workflow and the `--generate-keywords` flag.
-- [ ] T025: [P] Create a placeholder module `src/pkm_linker/smart_link.py` for future LLM logic, including a function to load secrets from a `.env` file.
+- [x] T023: [P] Add docstrings and type hinting to `src/pkm_linker/generate_keywords.py`.
+- [x] T024: [P] Update `README.md` to document the new automatic keyword generation workflow and the `--generate-keywords` flag.
+- [x] T025: [P] Create a placeholder module `src/pkm_linker/smart_link.py` for future LLM logic, including a function to load secrets from a `.env` file.
 
 ### Phase 4 Checkpoint
 - [ ] T026: Create session worklog in `logs/worklog_YYYY-MM-DD_s5.md`.
