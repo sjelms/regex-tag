@@ -1,9 +1,10 @@
 # Configure repository-specific paths. Provide absolute paths or use ~ for your home directory.
 
-# Directories that contain terminology or tag notes for tag_extract.py.
-tag_extract_directories:
-  - "/absolute/path/to/your/Terminology"
-  - "/absolute/path/to/your/Tags"
+# This file is for your local configuration and is ignored by Git.
+
+# Directory containing the single file with all terms.
+# Used by the keyword generation script.
+term_source_file: "_helper/parent-list-terms_2025-10-08_155312.md"
 
 # Directories scanned by link_authors.py and link_keywords.py.
 scan_directories:
@@ -12,6 +13,3 @@ scan_directories:
 # Data files used across scripts (relative paths resolve from the repo root).
 authors_json_file: "authors.json"
 keywords_csv_file: "keyword-mapping.csv"
-
-# Optional override for tag_extract.py output.
-keyword_output_csv: "keyword-mapping.csv"

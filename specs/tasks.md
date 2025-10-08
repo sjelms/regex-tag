@@ -13,10 +13,10 @@
 ## Phase 1: Setup & Project Structure
 *Goal: Prepare the project for the new keyword generation feature and improve the overall structure.*
 
-- [ ] T001: Create directory `src/pkm_linker/`.
-- [ ] T002: Add `python-frontmatter` and `python-dotenv` to `requirements.txt`.
+- [x] T001: Create directory `src/pkm_linker/`.
+- [x] T002: Add `python-frontmatter` and `python-dotenv` to `requirements.txt`.
 - [x] T003: Create a `.env.example` file in the root directory with LLM API key.
-- [ ] T004: In `config.yaml`, add a new key `term_source_directory:` with a placeholder path.
+- [x] T004: In `config.yaml`, add a new key `term_source_directory:` with a placeholder path.
 
 ### Phase 1 Checkpoint
 - [ ] T005: Create session worklog in `logs/worklog_YYYY-MM-DD_s2.md`.
@@ -36,8 +36,8 @@
 ## Phase 2: Tests First (TDD)
 *Goal: Write a failing test for the keyword generation feature before implementing it.*
 
-- [ ] T008: Create new test file `tests/test_generate_keywords.py`.
-- [ ] T009: In `tests/test_generate_keywords.py`, write a test that creates a temporary mock term file (e.g., with content like "Cognitive Load Theory (CLT)") and asserts that a `keyword-mapping.csv` is generated with the correct `Alias` and `LinkTarget` columns. This test MUST fail before proceeding.
+- [x] T008: Create new test file `tests/test_generate_keywords.py`.
+- [x] T009: In `tests/test_generate_keywords.py`, write a test that creates a temporary mock term file (e.g., with content like "Cognitive Load Theory (CLT)") and asserts that a `keyword-mapping.csv` is generated with the correct `Alias` and `LinkTarget` columns. This test MUST fail before proceeding.
 
 ### Phase 2 Checkpoint
 - [ ] T010: Create session worklog in `logs/worklog_YYYY-MM-DD_s3.md`.
