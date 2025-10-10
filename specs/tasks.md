@@ -16,12 +16,12 @@
 - [x] T001: Create directory `src/pkm_linker/`.
 - [x] T002: Add `python-frontmatter` and `python-dotenv` to `requirements.txt`.
 - [x] T003: Create a `.env.example` file in the root directory with LLM API key.
-- [x] T004: In `config.yaml`, add a new key `term_source_directory:` with a placeholder path.
+- [x] T004: In `config.yaml`, add a new key `term_source_file:` with a placeholder path.
 
 ### Phase 1 Checkpoint
-- [ ] T005: Create session worklog in `logs/worklog_YYYY-MM-DD_s2.md`.
-- [ ] T006: Commit all staged changes with the message "feat: Set up project structure for keyword generation".
-- [ ] T007: Push the changes to the remote repository.
+- [x] T005: Create session worklog in `logs/worklog_YYYY-MM-DD_s2.md`.
+- [x] T006: Commit all staged changes with the message "feat: Set up project structure for keyword generation".
+- [x] T007: Push the changes to the remote repository.
 
 ---
 

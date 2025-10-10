@@ -60,7 +60,7 @@ As a researcher and note-taker, I want to automatically create links in my perso
 
 ### Key Entities *(include if feature involves data)*
 - **Author**: Represents a person extracted from the BibTeX file. Contains `fullName`, `firstName`, and `lastName`.
-- **TermDefinition**: A Markdown file in the `term_source_directory` that defines a concept. It contains a `primaryTerm`, a list of `aliases`, and contextual metadata (`see also`, body content).
+- **TermDefinition**: A single line inside the configured `term_source_file`. Each line defines the canonical link target and any aliases (including abbreviations in parentheses) for a concept.
 - **KeywordMapping**: A row in the `keyword-mapping.csv` that maps an alias to a primary term link.
 - **MarkdownNote**: A `.md` file within a scannable directory that is a candidate for linking.
 - **Configuration**: User-defined settings stored in `config.yaml`.
