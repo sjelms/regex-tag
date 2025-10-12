@@ -1,7 +1,47 @@
 
 import csv
+import itertools
 import re
 from typing import Dict, List, Set
+
+CONNECTOR_VARIATIONS = {
+    "-": ["-", " ", "/"],
+    "–": ["–", "-", " ", "/"],
+    "—": ["—", "-", " ", "/"],
+    "/": ["/", "-", " "],
+}
+
+
+def _collapse_spaces(value: str) -> str:
+    """Normalize whitespace by collapsing multiple spaces and trimming ends."""
+    return re.sub(r"\s+", " ", value.strip())
+
+
+def _generate_alias_variations(alias: str) -> Set[str]:
+    """
+    Produce simple punctuation variations for an alias to catch hyphen/slash swaps.
+    """
+    alias = alias.strip()
+    if not alias:
+        return set()
+
+    variations: Set[str] = {_collapse_spaces(alias)}
+
+    connector_positions = [(idx, char) for idx, char in enumerate(alias) if char in CONNECTOR_VARIATIONS]
+    if connector_positions:
+        chars = list(alias)
+        options = [CONNECTOR_VARIATIONS[char] for _, char in connector_positions]
+        for replacements in itertools.product(*options):
+            trial = chars[:]
+            for (idx, _), replacement in zip(connector_positions, replacements):
+                trial[idx] = replacement
+            variations.add(_collapse_spaces("".join(trial)))
+
+    # Include a version with connectors removed entirely when appropriate.
+    stripped = re.sub(r"[-–—/]", " ", alias)
+    variations.add(_collapse_spaces(stripped))
+
+    return {variant for variant in variations if variant}
 
 def generate_keyword_mappings(term_file_path: str, csv_output_path: str) -> None:
     """
@@ -41,7 +81,11 @@ def generate_keyword_mappings(term_file_path: str, csv_output_path: str) -> None
             aliases.add(term_without_alias)
             aliases.add(alias_in_parens)
 
+        expanded_aliases: Set[str] = set()
         for alias in aliases:
+            expanded_aliases.update(_generate_alias_variations(alias))
+
+        for alias in expanded_aliases:
             # If the alias is new, add it.
             # If the alias already exists, update it ONLY if the new link_target is longer (more descriptive).
             if alias not in mappings or len(link_target) > len(mappings[alias]):

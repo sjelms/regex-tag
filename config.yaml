@@ -8,7 +8,7 @@ term_source_file: "_helper/parent-list-terms_2025-10-08_155312.md"
 
 # Directories scanned by link_authors.py and link_keywords.py.
 scan_directories:
-  - "/absolute/path/to/your/Notes"
+  - "_helper/test"
 
 # Data files used across scripts (relative paths resolve from the repo root).
 authors_json_file: "authors.json"
