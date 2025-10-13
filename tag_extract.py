@@ -5,7 +5,7 @@ import yaml
 from pathlib import Path
 
 CONFIG_FILE = "config.yaml"
-DEFAULT_OUTPUT_CSV = "keyword-mapping.csv"
+DEFAULT_OUTPUT_CSV = "unambiguous-keywords.csv"
 
 
 def load_config():

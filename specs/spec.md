@@ -20,8 +20,8 @@ As a researcher and note-taker, I want to automatically create links in my perso
 
 ### Acceptance Scenarios
 1. **Given** a BibLaTeX file with author entries and a directory of Markdown notes, **When** I run the linking tool, **Then** plain-text mentions of author names in my notes are converted into wiki-links (e.g., `[[John Smith]]` or `[[John Smith|Smith]]`).
-2. **Given** a directory of term definition files with YAML frontmatter, **When** I run the keyword generation script, **Then** a `keyword-mapping.csv` is created where each alias correctly maps to its primary term.
-3. **Given** a `keyword-mapping.csv` file and a directory of Markdown notes, **When** I run the keyword linking tool, **Then** those keywords are converted into wiki-links (e.g., `[[Some Concept]]`).
+2. **Given** a directory of term definition files with YAML frontmatter, **When** I run the keyword generation script, **Then** an `unambiguous-keywords.csv` and an `ambiguous-keywords.json` are created where aliases are grouped by whether they can be linked automatically or require contextual review.
+3. **Given** an `unambiguous-keywords.csv` file and a directory of Markdown notes, **When** I run the keyword linking tool, **Then** those keywords are converted into wiki-links (e.g., `[[Some Concept]]`).
 4. **Given** a note containing an ambiguous acronym like "CHAT", **When** I run the "smart linking" feature, **Then** the term is only linked to "Cultural-Historical Activity Theory" if the surrounding text contains related terms like "Vygotsky" or "Engeström".
 5. **Given** a note that has already been processed, **When** I run the linking tool again, **Then** existing links are not modified or nested.
 
@@ -44,11 +44,11 @@ As a researcher and note-taker, I want to automatically create links in my perso
 - **FR-007**: For each line in the term file, the system MUST treat the entire line as the canonical `LinkTarget`, corresponding to a filename.
 - **FR-008**: The system MUST parse each line to identify aliases. If a line contains an abbreviation in parentheses (e.g., "Cognitive Load Theory (CLT)"), the system MUST extract three aliases: the full string, the term itself ("Cognitive Load Theory"), and the abbreviation ("CLT").
 - **FR-009**: The system MUST resolve alias conflicts by prioritizing the mapping associated with the most descriptive (longest) `LinkTarget`. For example, the alias "MIT" should map to "Massachusetts Institute of Technology (MIT)", not to "MIT".
-- **FR-010**: The system MUST generate a `keyword-mapping.csv` file containing two columns, `Alias` and `LinkTarget`, to store these mappings.
+- **FR-010**: The system MUST generate an `unambiguous-keywords.csv` file containing two columns, `Alias` and `LinkTarget`, to store linkable mappings, and an `ambiguous-keywords.json` file listing aliases that require contextual disambiguation.
 
 ### Linking Requirements
 - **FR-011**: System MUST find and replace plain-text author names in Markdown files with `[[FullName]]` or `[[FullName|LastName]]` style wiki-links, using the `authors.json` file as a source.
-- **FR-012**: System MUST find and replace keywords in Markdown files using the `keyword-mapping.csv`. If the text found in the note (the `Alias`) is different from the `LinkTarget`, the link MUST be created using the piped format: `[[LinkTarget|Alias]]`.
+- **FR-012**: System MUST find and replace keywords in Markdown files using the `unambiguous-keywords.csv`. If the text found in the note (the `Alias`) is different from the `LinkTarget`, the link MUST be created using the piped format: `[[LinkTarget|Alias]]`.
 - **FR-013**: System MUST NOT modify or re-link text that is already enclosed in `[[...]]` wiki-links (idempotency).
 
 ### Future "Smart Linking" Requirements
@@ -61,7 +61,7 @@ As a researcher and note-taker, I want to automatically create links in my perso
 ### Key Entities *(include if feature involves data)*
 - **Author**: Represents a person extracted from the BibTeX file. Contains `fullName`, `firstName`, and `lastName`.
 - **TermDefinition**: A single line inside the configured `term_source_file`. Each line defines the canonical link target and any aliases (including abbreviations in parentheses) for a concept.
-- **KeywordMapping**: A row in the `keyword-mapping.csv` that maps an alias to a primary term link.
+- **KeywordMapping**: A row in the `unambiguous-keywords.csv` that maps an alias to a primary term link.
 - **MarkdownNote**: A `.md` file within a scannable directory that is a candidate for linking.
 - **Configuration**: User-defined settings stored in `config.yaml`.
 - **Secret**: User-specific API keys and endpoints stored in `.env`, ignored by Git.

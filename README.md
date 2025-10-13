@@ -2,7 +2,7 @@
 
 This project provides a Python-based utility to automatically create a network of connections within your Personal Knowledge Management (PKM) system, such as Obsidian. The pipeline works in multiple stages:
 1.  It parses a master BibLaTeX file to generate a clean, structured `authors.json` file.
-2.  It generates a `keyword-mapping.csv` from a simple text file of your key terms and their aliases.
+2.  It generates an `unambiguous-keywords.csv` (and companion `ambiguous-keywords.json`) from a simple text file of your key terms and their aliases.
 3.  It uses these generated files to scan your existing Markdown notes, finding plain-text mentions and converting them into wiki-links (e.g., `John Smith` becomes `[[John Smith]]` or `CLT` becomes `[[Cognitive Load Theory (CLT)|CLT]]`).
 
 This retroactively links your notes to your academic sources and key concepts, creating a densely interconnected knowledge base.
@@ -19,12 +19,14 @@ This retroactively links your notes to your academic sources and key concepts, c
 
 ### How Keyword Linking Works
 
-The system generates a `keyword-mapping.csv` file that acts as a dictionary. It has two columns: `Alias` and `LinkTarget`.
+Stage 1 produces `unambiguous-keywords.csv`, a dictionary with two columns: `Alias` and `LinkTarget`.
 
 -   **`LinkTarget`**: This is always the full, canonical name of the note file (e.g., `Cognitive Load Theory (CLT)`).
 -   **`Alias`**: This is a term that should be linked (e.g., `CLT` or `Cognitive Load Theory`).
 
 When the script finds an `Alias` in your text, it looks up its `LinkTarget`. If they are different, it creates a piped link: `[[LinkTarget|Alias]]`. This ensures the link is correct while preserving the original text.
+
+Stage 2 produces `ambiguous-keywords.json`, a list of aliases that map to multiple possible link targets. The optional `--smart-link` command invokes an LLM to examine each occurrence in context and choose the correct target before adding a wiki-link.
 
 ---
 
@@ -90,7 +92,12 @@ python main.py --help
     python main.py --link-keywords
     ```
 
-4.  **Run All Steps** (A convenient way to do everything at once)
+4.  **Smart Link Ambiguous Terms** (Optional, requires an API key in `.env`)
+    ```bash
+    python main.py --smart-link
+    ```
+
+5.  **Run All Steps** (A convenient way to do everything at once, including smart linking if configured)
     ```bash
     python main.py --all
     ```

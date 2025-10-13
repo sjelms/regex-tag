@@ -1,0 +1,68 @@
+[
+  {
+    "alias": "CLT",
+    "candidates": [
+      "Cognitive Load Theory (CLT)",
+      "cross-Laminated Timber (CLT)"
+    ],
+    "source_terms": [
+      "Cognitive Load Theory (CLT)",
+      "cross-Laminated Timber (CLT)"
+    ]
+  },
+  {
+    "alias": "Columbia University",
+    "candidates": [
+      "Columbia University",
+      "School of Professional Studies (Columbia University)"
+    ],
+    "source_terms": [
+      "Columbia University",
+      "School of Professional Studies (Columbia University)"
+    ]
+  },
+  {
+    "alias": "McKinsey Global Institute",
+    "candidates": [
+      "McKinsey Global Institute",
+      "McKinsey Global Institute (MGI)"
+    ],
+    "source_terms": [
+      "McKinsey Global Institute",
+      "McKinsey Global Institute (MGI)"
+    ]
+  },
+  {
+    "alias": "NPR",
+    "candidates": [
+      "NPR",
+      "National Public Radio (NPR)"
+    ],
+    "source_terms": [
+      "NPR",
+      "National Public Radio (NPR)"
+    ]
+  },
+  {
+    "alias": "National Institute of Building Sciences",
+    "candidates": [
+      "National Institute of Building Sciences",
+      "National Institute of Building Sciences (NIBS)"
+    ],
+    "source_terms": [
+      "National Institute of Building Sciences",
+      "National Institute of Building Sciences (NIBS)"
+    ]
+  },
+  {
+    "alias": "UCL",
+    "candidates": [
+      "UCL",
+      "University College London (UCL)"
+    ],
+    "source_terms": [
+      "UCL",
+      "University College London (UCL)"
+    ]
+  }
+]

@@ -1,74 +1,8 @@
-
 import os
 import re
 import csv
-from typing import Any, Dict, List, Optional
 
-try:
-    import yaml  # type: ignore
-except ModuleNotFoundError:
-    yaml = None
-
-
-def _strip_quotes(value: str) -> str:
-    if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
-        return value[1:-1]
-    return value
-
-
-def _fallback_parse(content: str) -> Dict[str, Any]:
-    """
-    Minimal parser that understands the limited YAML subset used in config.yaml.
-    Supports string values and top-level lists defined with "- item" syntax.
-    """
-    config: Dict[str, Any] = {}
-    current_list_key: Optional[str] = None
-
-    for raw_line in content.splitlines():
-        line = raw_line.split('#', 1)[0].rstrip()
-        if not line.strip():
-            continue
-
-        if line.lstrip().startswith('- '):
-            if not current_list_key:
-                raise ValueError(f"List item without a key in config: '{raw_line}'")
-            item = _strip_quotes(line.lstrip()[2:].strip())
-            config.setdefault(current_list_key, []).append(item)
-            continue
-
-        if ':' in line:
-            key, value = line.split(':', 1)
-            key = key.strip()
-            value = value.strip()
-            if value:
-                config[key] = _strip_quotes(value)
-                current_list_key = None
-            else:
-                config[key] = []
-                current_list_key = key
-            continue
-
-        raise ValueError(f"Unable to parse config line: '{raw_line}'")
-
-    return config
-
-# --- Configuration ---
-CONFIG_FILE = "config.yaml"
-
-def load_config():
-    """Loads configuration from the YAML file."""
-    try:
-        with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
-            content = f.read()
-            if yaml:
-                return yaml.safe_load(content)
-            return _fallback_parse(content)
-    except FileNotFoundError:
-        print(f"Error: Configuration file '{CONFIG_FILE}' not found.")
-        return None
-    except ValueError as exc:
-        print(f"Error parsing configuration file '{CONFIG_FILE}': {exc}")
-        return None
+from .config_loader import load_config
 
 def load_keywords(filepath):
     """Loads keywords from a CSV file."""
@@ -149,10 +83,10 @@ def main():
         return
 
     scan_directories = config.get('scan_directories', [])
-    keywords_file = config.get('keywords_csv_file')
+    keywords_file = config.get('unambiguous_keywords_csv')
 
     if not scan_directories or not keywords_file:
-        print("Error: 'scan_directories' or 'keywords_csv_file' not set in config.yaml. Exiting.")
+        print("Error: 'scan_directories' or 'unambiguous_keywords_csv' not set in config.yaml. Exiting.")
         return
 
     keywords = load_keywords(keywords_file)

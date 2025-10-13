@@ -1,7 +1,9 @@
 
 import csv
 import itertools
+import json
 import re
+from collections import defaultdict
 from typing import Dict, List, Set
 
 CONNECTOR_VARIATIONS = {
@@ -43,7 +45,12 @@ def _generate_alias_variations(alias: str) -> Set[str]:
 
     return {variant for variant in variations if variant}
 
-def generate_keyword_mappings(term_file_path: str, csv_output_path: str) -> None:
+
+def generate_keyword_mappings(
+    term_file_path: str,
+    unambiguous_csv_output_path: str,
+    ambiguous_json_output_path: str,
+) -> None:
     """
     Parses a term file and generates a CSV mapping aliases to link targets.
 
@@ -60,7 +67,8 @@ def generate_keyword_mappings(term_file_path: str, csv_output_path: str) -> None
         term_file_path (str): The absolute path to the input term list file.
         csv_output_path (str): The absolute path for the output CSV mapping file.
     """
-    mappings: Dict[str, str] = {}
+    alias_to_targets: Dict[str, Set[str]] = defaultdict(set)
+    alias_to_source_terms: Dict[str, Set[str]] = defaultdict(set)
 
     try:
         with open(term_file_path, 'r', encoding='utf-8') as f:
@@ -86,19 +94,38 @@ def generate_keyword_mappings(term_file_path: str, csv_output_path: str) -> None
             expanded_aliases.update(_generate_alias_variations(alias))
 
         for alias in expanded_aliases:
-            # If the alias is new, add it.
-            # If the alias already exists, update it ONLY if the new link_target is longer (more descriptive).
-            if alias not in mappings or len(link_target) > len(mappings[alias]):
-                mappings[alias] = link_target
+            alias_to_targets[alias].add(link_target)
+            alias_to_source_terms[alias].add(line)
 
-    # Write to CSV
+    unambiguous_mappings: Dict[str, str] = {}
+    ambiguous_entries: List[Dict[str, object]] = []
+
+    for alias, targets in alias_to_targets.items():
+        if len(targets) == 1:
+            unambiguous_mappings[alias] = next(iter(targets))
+        else:
+            ambiguous_entries.append({
+                "alias": alias,
+                "candidates": sorted(targets),
+                "source_terms": sorted(alias_to_source_terms.get(alias, [])),
+            })
+
+    # Write unambiguous mappings to CSV
     try:
-        with open(csv_output_path, 'w', newline='', encoding='utf-8') as f:
+        with open(unambiguous_csv_output_path, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(['Alias', 'LinkTarget'])
             # Sort by alias for consistent output
-            for alias, target in sorted(mappings.items()):
+            for alias, target in sorted(unambiguous_mappings.items()):
                 writer.writerow([alias, target])
-        print(f"✅ Success! Wrote {len(mappings)} keyword mappings to '{csv_output_path}'")
+        print(f"✅ Success! Wrote {len(unambiguous_mappings)} unambiguous keyword mappings to '{unambiguous_csv_output_path}'")
     except IOError as e:
-        print(f"Error writing to CSV file {csv_output_path}: {e}")
+        print(f"Error writing to CSV file {unambiguous_csv_output_path}: {e}")
+
+    # Write ambiguous mappings to JSON
+    try:
+        with open(ambiguous_json_output_path, 'w', encoding='utf-8') as f:
+            json.dump(sorted(ambiguous_entries, key=lambda item: item["alias"]), f, indent=2, ensure_ascii=False)
+        print(f"✅ Success! Wrote {len(ambiguous_entries)} ambiguous keyword entries to '{ambiguous_json_output_path}'")
+    except IOError as e:
+        print(f"Error writing to JSON file {ambiguous_json_output_path}: {e}")

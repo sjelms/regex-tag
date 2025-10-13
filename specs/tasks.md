@@ -37,7 +37,7 @@
 *Goal: Write a failing test for the keyword generation feature before implementing it.*
 
 - [x] T008: Create new test file `tests/test_generate_keywords.py`.
-- [x] T009: In `tests/test_generate_keywords.py`, write a test that creates a temporary mock term file (e.g., with content like "Cognitive Load Theory (CLT)") and asserts that a `keyword-mapping.csv` is generated with the correct `Alias` and `LinkTarget` columns. This test MUST fail before proceeding.
+- [x] T009: In `tests/test_generate_keywords.py`, write a test that creates a temporary mock term file (e.g., with content like "Cognitive Load Theory (CLT)") and asserts that the unambiguous CSV and ambiguous JSON outputs contain the correct aliases and link targets. This test MUST fail before proceeding.
 
 ### Phase 2 Checkpoint
 - [x] T010: Create session worklog in `logs/worklog_YYYY-MM-DD_s3.md`.
@@ -81,14 +81,14 @@
 ## Phase 5: Two-Stage & Smart Linking
 *Goal: Implement ambiguity detection and a smart-linking fallback using an LLM.*
 
-- [ ] T029: Update `config.yaml` to replace `keywords_csv_file` with `unambiguous_keywords_csv` and add `ambiguous_keywords_json`.
-- [ ] T030: Modify `src/pkm_linker/generate_keywords.py` to detect ambiguous aliases and output two files: `unambiguous-keywords.csv` and `ambiguous-keywords.json`.
-- [ ] T031: Update `tests/test_generate_keywords.py` to assert that both the unambiguous and ambiguous output files are created correctly.
-- [ ] T032: Modify `src/pkm_linker/link_keywords.py` to read from `unambiguous-keywords.csv`.
-- [ ] T033: Add `openai` to `requirements.txt` and install it.
-- [ ] T034: Implement the core logic in `src/pkm_linker/smart_link.py` to read `ambiguous-keywords.json`, find terms in notes, and call the OpenAI API for contextual analysis.
-- [ ] T035: Add a new `--smart-link` flag to `main.py` that triggers the `smart_link.py` script.
-- [ ] T036: Update the `--all` command in `main.py` to run the smart linker after the simple linker.
+- [x] T029: Update `config.yaml` to replace `keywords_csv_file` with `unambiguous_keywords_csv` and add `ambiguous_keywords_json`.
+- [x] T030: Modify `src/pkm_linker/generate_keywords.py` to detect ambiguous aliases and output two files: `unambiguous-keywords.csv` and `ambiguous-keywords.json`.
+- [x] T031: Update `tests/test_generate_keywords.py` to assert that both the unambiguous and ambiguous output files are created correctly.
+- [x] T032: Modify `src/pkm_linker/link_keywords.py` to read from `unambiguous-keywords.csv`.
+- [x] T033: Add `openai` to `requirements.txt` and install it.
+- [x] T034: Implement the core logic in `src/pkm_linker/smart_link.py` to read `ambiguous-keywords.json`, find terms in notes, and call the OpenAI API for contextual analysis.
+- [x] T035: Add a new `--smart-link` flag to `main.py` that triggers the `smart_link.py` script.
+- [x] T036: Update the `--all` command in `main.py` to run the smart linker after the simple linker.
 
 ### Phase 5 Checkpoint
 - [ ] T037: Create session worklog in `logs/worklog_YYYY-MM-DD_s6.md`.

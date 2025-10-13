@@ -1,21 +1,8 @@
 import os
 import re
 import json
-import yaml
 
-# --- Configuration ---
-CONFIG_FILE = "config.yaml"
-# MODIFICATION: The line below is no longer needed as it will be read from config.yaml
-# AUTHORS_JSON_FILE = "authors.json"
-
-def load_config():
-    """Loads configuration from the YAML file."""
-    try:
-        with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
-            return yaml.safe_load(f)
-    except FileNotFoundError:
-        print(f"Error: Configuration file '{CONFIG_FILE}' not found.")
-        return None
+from .config_loader import load_config
 
 def load_authors(filepath):
     """Loads the author data from the JSON file."""

@@ -11,7 +11,8 @@ scan_directories:
 
 # Data files used across scripts (relative paths resolve from the repo root).
 authors_json_file: "authors.json"
-keywords_csv_file: "keyword-mapping.csv"
+unambiguous_keywords_csv: "unambiguous-keywords.csv"
+ambiguous_keywords_json: "ambiguous-keywords.json"
 
 # Optional override for tag_extract.py output.
-keyword_output_csv: "keyword-mapping.csv"
+keyword_output_csv: "unambiguous-keywords.csv"

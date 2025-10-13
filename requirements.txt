@@ -3,3 +3,4 @@ latexcodec
 PyYAML==6.0.2
 python-frontmatter
 python-dotenv
+openai
