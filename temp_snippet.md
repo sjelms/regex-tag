@@ -1,0 +1,1 @@
+- However, the scope, speed and purpose of their apprenticeship trajectories varied from company to company and this variation seemed particularly germane to the quality of learning experienced by apprentices and to be illustrative of the expansive/restrictive continuum we have invoked
