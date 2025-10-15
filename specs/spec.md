@@ -20,10 +20,11 @@ As a researcher and note-taker, I want to automatically create links in my perso
 
 ### Acceptance Scenarios
 1. **Given** a BibLaTeX file with author entries and a directory of Markdown notes, **When** I run the linking tool, **Then** plain-text mentions of author names in my notes are converted into wiki-links (e.g., `[[John Smith]]` or `[[John Smith|Smith]]`).
-2. **Given** a directory of term definition files with YAML frontmatter, **When** I run the keyword generation script, **Then** an `unambiguous-keywords.csv` and an `ambiguous-keywords.json` are created where aliases are grouped by whether they can be linked automatically or require contextual review.
-3. **Given** an `unambiguous-keywords.csv` file and a directory of Markdown notes, **When** I run the keyword linking tool, **Then** those keywords are converted into wiki-links (e.g., `[[Some Concept]]`).
-4. **Given** a note containing an ambiguous acronym like "CHAT", **When** I run the "smart linking" feature, **Then** the term is only linked to "Cultural-Historical Activity Theory" if the surrounding text contains related terms like "Vygotsky" or "Engeström".
-5. **Given** a note that has already been processed, **When** I run the linking tool again, **Then** existing links are not modified or nested.
+2. **Given** a directory of term definition files with YAML frontmatter, **When** I run the keyword generation script, **Then** an `unambiguous-keywords.csv` and an `ambiguous-keywords.json` are created where aliases are grouped by whether they can be linked automatically or require contextual review, and each entry carries its topic cluster metadata.
+3. **Given** a Markdown note, **When** I invoke contextual analysis, **Then** the system classifies the note into one or more topic clusters (e.g., education, construction, technology) and produces a short explanation of the detected context.
+4. **Given** the contextual classification and `unambiguous-keywords.csv`, **When** I run the keyword linking tool, **Then** only aliases whose clusters match the detected context are converted into wiki-links (e.g., `[[Some Concept]]`).
+5. **Given** a note containing an ambiguous acronym like "CHAT", **When** I run the "smart linking" feature, **Then** the term is only linked to "Cultural-Historical Activity Theory" if the surrounding text contains related terms like "Vygotsky" or "Engeström".
+6. **Given** a note that has already been processed, **When** I run the linking tool again, **Then** existing links are not modified or nested, and I can request a dry-run summary of proposed new links before applying changes.
 
 ### Edge Cases
 - **Author Ambiguity**: How does the system handle two different authors who share the same last name (e.g., `John Smith` and `Jane Smith`)? The regex-based approach will link to the first match. The "smart linking" feature should aim to resolve this based on context.
@@ -44,19 +45,23 @@ As a researcher and note-taker, I want to automatically create links in my perso
 - **FR-007**: For each line in the term file, the system MUST treat the entire line as the canonical `LinkTarget`, corresponding to a filename.
 - **FR-008**: The system MUST parse each line to identify aliases. If a line contains an abbreviation in parentheses (e.g., "Cognitive Load Theory (CLT)"), the system MUST extract three aliases: the full string, the term itself ("Cognitive Load Theory"), and the abbreviation ("CLT").
 - **FR-009**: The system MUST resolve alias conflicts by prioritizing the mapping associated with the most descriptive (longest) `LinkTarget`. For example, the alias "MIT" should map to "Massachusetts Institute of Technology (MIT)", not to "MIT".
-- **FR-010**: The system MUST generate an `unambiguous-keywords.csv` file containing two columns, `Alias` and `LinkTarget`, to store linkable mappings, and an `ambiguous-keywords.json` file listing aliases that require contextual disambiguation.
+- **FR-010**: The system MUST generate an `unambiguous-keywords.csv` file that includes, for every alias, the canonical link target and associated metadata describing at least one topic cluster/domain (e.g., `education`, `construction`). An `ambiguous-keywords.json` file MUST list aliases that require contextual disambiguation along with their candidate clusters.
+- **FR-011**: The system MUST expose a machine-readable catalogue of all topic clusters and their descriptions so downstream components can reference consistent terminology.
 
-### Linking Requirements
-- **FR-011**: System MUST find and replace plain-text author names in Markdown files with `[[FullName]]` or `[[FullName|LastName]]` style wiki-links, using the `authors.json` file as a source.
-- **FR-012**: System MUST find and replace keywords in Markdown files using the `unambiguous-keywords.csv`. If the text found in the note (the `Alias`) is different from the `LinkTarget`, the link MUST be created using the piped format: `[[LinkTarget|Alias]]`.
-- **FR-013**: System MUST NOT modify or re-link text that is already enclosed in `[[...]]` wiki-links (idempotency).
+### Context Analysis & Linking Requirements
+- **FR-012**: System MUST find and replace plain-text author names in Markdown files with `[[FullName]]` or `[[FullName|LastName]]` style wiki-links, using the `authors.json` file as a source.
+- **FR-013**: Before linking keywords, the system MUST classify each Markdown note into one or more topic clusters using contextual cues from the note. The classification MAY leverage an LLM but MUST always produce a deterministic list of clusters in the output.
+- **FR-014**: System MUST restrict automatic keyword linking to aliases whose clusters overlap with the detected clusters for the note. If no overlap exists, the alias MUST be skipped.
+- **FR-015**: When the text found in the note (the `Alias`) is different from the `LinkTarget`, the link MUST be created using the piped format: `[[LinkTarget|Alias]]`.
+- **FR-016**: System MUST provide a dry-run option that previews the set of proposed wiki-links for a note before modifications are persisted.
+- **FR-017**: System MUST NOT modify or re-link text that is already enclosed in `[[...]]` wiki-links (idempotency) and MUST avoid inserting links inside partially linked tokens (e.g., within `[[Existing Link|` segments).
 
 ### Future "Smart Linking" Requirements
-- **FR-014**: System SHOULD provide an optional "smart linking" mode that uses an LLM for contextual analysis.
-- **FR-015**: In smart linking mode, the system MUST analyze the text surrounding a potential link to disambiguate terms. It SHOULD use contextual clues from the term definition files, such as the `see also` field and the body content (e.g., `TLDR` summaries), to improve accuracy.
-- **FR-016**: The system MUST support using either a local LLM or a cloud-based LLM via an API.
-- **FR-017**: API keys and endpoint URLs for cloud-based LLMs MUST be loaded from a `.env` file.
-- **FR-018**: The `.env` file MUST be included in the project's `.gitignore` file to prevent accidental commits of secrets.
+- **FR-018**: System SHOULD provide an optional "smart linking" mode that uses an LLM for contextual analysis beyond the initial clustering phase.
+- **FR-019**: In smart linking mode, the system MUST analyze the text surrounding a potential link to disambiguate terms. It SHOULD use contextual clues from the term definition files, such as the `see also` field and the body content (e.g., `TLDR` summaries), to improve accuracy.
+- **FR-020**: The system MUST support using either a local LLM or a cloud-based LLM via an API.
+- **FR-021**: API keys and endpoint URLs for cloud-based LLMs MUST be loaded from a `.env` file.
+- **FR-022**: The `.env` file MUST be included in the project's `.gitignore` file to prevent accidental commits of secrets.
 
 ### Key Entities *(include if feature involves data)*
 - **Author**: Represents a person extracted from the BibTeX file. Contains `fullName`, `firstName`, and `lastName`.

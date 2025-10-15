@@ -78,19 +78,77 @@
 
 ---
 
-## Phase 5: Two-Stage & Smart Linking
-*Goal: Implement ambiguity detection and a smart-linking fallback using an LLM.*
+## Phase 5: Context-Aware Pivot (Strategy & Taxonomy)
+*Goal: Establish the metadata and process changes required for context-sensitive linking.*
 
-- [x] T029: Update `config.yaml` to replace `keywords_csv_file` with `unambiguous_keywords_csv` and add `ambiguous_keywords_json`.
-- [x] T030: Modify `src/pkm_linker/generate_keywords.py` to detect ambiguous aliases and output two files: `unambiguous-keywords.csv` and `ambiguous-keywords.json`.
-- [x] T031: Update `tests/test_generate_keywords.py` to assert that both the unambiguous and ambiguous output files are created correctly.
-- [x] T032: Modify `src/pkm_linker/link_keywords.py` to read from `unambiguous-keywords.csv`.
-- [x] T033: Add `openai` to `requirements.txt` and install it.
-- [x] T034: Implement the core logic in `src/pkm_linker/smart_link.py` to read `ambiguous-keywords.json`, find terms in notes, and call the OpenAI API for contextual analysis.
-- [x] T035: Add a new `--smart-link` flag to `main.py` that triggers the `smart_link.py` script.
-- [x] T036: Update the `--all` command in `main.py` to run the smart linker after the simple linker.
+- [ ] T029: Define and document the initial topic cluster taxonomy (e.g., `education`, `construction`, `technology`, `institutions`) in `specs/spec.md`.
+- [ ] T030: Update the term source format and `unambiguous-keywords.csv` schema to include cluster/domain metadata for every entry.
+- [ ] T031: Extend `src/pkm_linker/generate_keywords.py` so it populates the new metadata fields while still producing ambiguous/unambiguous outputs.
+- [ ] T032: Augment `tests/test_generate_keywords.py` to verify that cluster metadata is written to the CSV and preserved in the JSON output.
+- [ ] T033: Document the taxonomy and CSV changes in `README.md` and `config.example.yaml`.
 
 ### Phase 5 Checkpoint
-- [ ] T037: Create session worklog in `logs/worklog_YYYY-MM-DD_s6.md`.
-- [ ] T038: Commit all staged changes with the message "feat: Implement two-stage smart linking system".
-- [ ] T039: Push the changes to the remote repository.
+- [ ] T034: Create session worklog in `logs/worklog_YYYY-MM-DD_s5.md`.
+- [ ] T035: Commit all staged changes with the message "chore: add keyword clustering metadata".
+- [ ] T036: Push the changes to the remote repository.
+
+---
+
+## Phase 6: Context Classification & Filtering
+*Goal: Use note-level analysis (LLM-assisted) to select relevant clusters before linking.*
+
+- [ ] T037: Design the context-classification prompt/contract and capture it in `specs/spec.md`.
+- [ ] T038: Implement a lightweight classifier utility (`src/pkm_linker/context_classifier.py`) that returns clusters and confidence using an LLM or rule-based fallback.
+- [ ] T039: Add configuration to `config.yaml` for classifier settings (e.g., max tokens, models, fallback behaviour).
+- [ ] T040: Wire `main.py`/CLI to support a `--classify` dry-run command that prints detected clusters and justification.
+- [ ] T041: Create unit/integration tests (or golden fixtures) validating classification outputs on at least two representative notes.
+
+### Phase 6 Checkpoint
+- [ ] T042: Create session worklog in `logs/worklog_YYYY-MM-DD_s6.md`.
+- [ ] T043: Commit all staged changes with the message "feat: add context classification for linking".
+- [ ] T044: Push the changes to the remote repository.
+
+---
+
+## Phase 7: Safe Linking & Dry-Run Workflow
+*Goal: Apply filtered aliases with improved boundary checks and preview capabilities.*
+
+- [ ] T045: Rework `src/pkm_linker/link_keywords.py` to accept a filtered alias set, enforce explicit boundary rules, and skip text already within wiki-links.
+- [ ] T046: Implement a dry-run mode that lists proposed replacements (alias, target, line excerpt) without modifying files.
+- [ ] T047: Add regression tests covering punctuation-heavy aliases (`expansive/restrictive continuum`) and ensure no double-linking occurs.
+- [ ] T048: Update CLI help and `README.md` to describe the dry-run flow and safe-linking guarantees.
+
+### Phase 7 Checkpoint
+- [ ] T049: Create session worklog in `logs/worklog_YYYY-MM-DD_s7.md`.
+- [ ] T050: Commit all staged changes with the message "feat: add safe link filtering and dry run".
+- [ ] T051: Push the changes to the remote repository.
+
+---
+
+## Phase 8: Smart Linking Refinement
+*Goal: Reintroduce LLM-based disambiguation leveraging the new clusters and context.*
+
+- [ ] T052: Refactor `src/pkm_linker/smart_link.py` to consume cluster-aware ambiguous terms and the classifier output.
+- [ ] T053: Implement caching and rate-limit handling for smart-link API calls; log outcomes for auditability.
+- [ ] T054: Provide a report summarising ambiguous terms that were skipped or require manual review.
+- [ ] T055: Add end-to-end tests (recorded mocks) ensuring smart linking only fires for cluster-aligned aliases.
+
+### Phase 8 Checkpoint
+- [ ] T056: Create session worklog in `logs/worklog_YYYY-MM-DD_s8.md`.
+- [ ] T057: Commit all staged changes with the message "feat: integrate contextual smart linking".
+- [ ] T058: Push the changes to the remote repository.
+
+---
+
+## Phase 9: Validation & Rollout
+*Goal: Validate the full pipeline and capture operational guidance.*
+
+- [ ] T059: Assemble a representative Markdown test suite (education, construction, tech notes) under `_helper/test/` for repeatable validation.
+- [ ] T060: Document an end-to-end runbook covering classification, dry-run review, final linking, and smart-link reconciliation.
+- [ ] T061: Capture before/after diffs for key notes and file them in `logs/validation/`.
+- [ ] T062: Prepare a final summary worklog and changelog entry for release.
+
+### Phase 9 Checkpoint
+- [ ] T063: Create session worklog in `logs/worklog_YYYY-MM-DD_s9.md`.
+- [ ] T064: Commit all staged changes with the message "chore: finalize contextual linking rollout".
+- [ ] T065: Push the changes to the remote repository.
