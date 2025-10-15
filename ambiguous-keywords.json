@@ -8,6 +8,10 @@
     "source_terms": [
       "Cognitive Load Theory (CLT)",
       "cross-Laminated Timber (CLT)"
+    ],
+    "clusters": [
+      "education-learning",
+      "sustainability-materials"
     ]
   },
   {
@@ -19,6 +23,10 @@
     "source_terms": [
       "Columbia University",
       "School of Professional Studies (Columbia University)"
+    ],
+    "clusters": [
+      "education-learning",
+      "organizations-institutions"
     ]
   },
   {
@@ -30,6 +38,9 @@
     "source_terms": [
       "McKinsey Global Institute",
       "McKinsey Global Institute (MGI)"
+    ],
+    "clusters": [
+      "organizations-institutions"
     ]
   },
   {
@@ -41,6 +52,9 @@
     "source_terms": [
       "NPR",
       "National Public Radio (NPR)"
+    ],
+    "clusters": [
+      "general"
     ]
   },
   {
@@ -52,6 +66,9 @@
     "source_terms": [
       "National Institute of Building Sciences",
       "National Institute of Building Sciences (NIBS)"
+    ],
+    "clusters": [
+      "organizations-institutions"
     ]
   },
   {
@@ -63,6 +80,11 @@
     "source_terms": [
       "UCL",
       "University College London (UCL)"
+    ],
+    "clusters": [
+      "general",
+      "geography-regions",
+      "organizations-institutions"
     ]
   }
 ]

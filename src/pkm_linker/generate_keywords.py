@@ -13,6 +13,64 @@ CONNECTOR_VARIATIONS = {
     "/": ["/", "-", " "],
 }
 
+DEFAULT_CLUSTER = "general"
+CLUSTER_RULES = [
+    ("education", "education-learning"),
+    ("learning", "education-learning"),
+    ("cognitive", "education-learning"),
+    ("apprentice", "education-learning"),
+    ("school", "education-learning"),
+    ("pedagog", "education-learning"),
+    ("construction", "construction-built_environment"),
+    ("prefab", "construction-built_environment"),
+    ("offsite", "construction-built_environment"),
+    ("off-site", "construction-built_environment"),
+    ("modular", "construction-built_environment"),
+    ("bim", "construction-built_environment"),
+    ("dfma", "construction-built_environment"),
+    ("technology", "technology-computing"),
+    ("robot", "technology-computing"),
+    ("digital", "technology-computing"),
+    ("software", "technology-computing"),
+    ("ai", "technology-computing"),
+    ("ar ", "technology-computing"),
+    ("vr", "technology-computing"),
+    ("xr", "technology-computing"),
+    ("policy", "policy-governance"),
+    ("govern", "policy-governance"),
+    ("regulation", "policy-governance"),
+    ("strategy", "policy-governance"),
+    ("government", "policy-governance"),
+    ("organization", "organizations-institutions"),
+    ("institute", "organizations-institutions"),
+    ("association", "organizations-institutions"),
+    ("university", "organizations-institutions"),
+    ("college", "organizations-institutions"),
+    ("agency", "organizations-institutions"),
+    ("city", "geography-regions"),
+    ("country", "geography-regions"),
+    ("region", "geography-regions"),
+    ("uk", "geography-regions"),
+    ("usa", "geography-regions"),
+    ("england", "geography-regions"),
+    ("london", "geography-regions"),
+    ("analysis", "research-methods"),
+    ("method", "research-methods"),
+    ("ethnography", "research-methods"),
+    ("fieldwork", "research-methods"),
+    ("case study", "research-methods"),
+    ("sustainability", "sustainability-materials"),
+    ("timber", "sustainability-materials"),
+    ("material", "sustainability-materials"),
+    ("green", "sustainability-materials"),
+    ("carbon", "sustainability-materials"),
+    ("worker", "people-roles"),
+    ("workforce", "people-roles"),
+    ("teacher", "people-roles"),
+    ("leader", "people-roles"),
+    ("manager", "people-roles"),
+]
+
 
 def _collapse_spaces(value: str) -> str:
     """Normalize whitespace by collapsing multiple spaces and trimming ends."""
@@ -46,6 +104,21 @@ def _generate_alias_variations(alias: str) -> Set[str]:
     return {variant for variant in variations if variant}
 
 
+def _infer_clusters(term: str) -> List[str]:
+    """Assign rough topic clusters based on keyword heuristics."""
+    term_lower = term.lower()
+    clusters: Set[str] = set()
+
+    for needle, cluster in CLUSTER_RULES:
+        if needle in term_lower:
+            clusters.add(cluster)
+
+    if not clusters:
+        clusters.add(DEFAULT_CLUSTER)
+
+    return sorted(clusters)
+
+
 def generate_keyword_mappings(
     term_file_path: str,
     unambiguous_csv_output_path: str,
@@ -69,6 +142,7 @@ def generate_keyword_mappings(
     """
     alias_to_targets: Dict[str, Set[str]] = defaultdict(set)
     alias_to_source_terms: Dict[str, Set[str]] = defaultdict(set)
+    alias_to_clusters: Dict[str, Set[str]] = defaultdict(set)
 
     try:
         with open(term_file_path, 'r', encoding='utf-8') as f:
@@ -80,6 +154,7 @@ def generate_keyword_mappings(
     for line in lines:
         link_target: str = line
         aliases: Set[str] = {line}
+        clusters: List[str] = _infer_clusters(line)
 
         # Regex to find content in parentheses, e.g., "Term (Alias)"
         match = re.search(r'^(.*) \((.*)\)$', line)
@@ -96,6 +171,7 @@ def generate_keyword_mappings(
         for alias in expanded_aliases:
             alias_to_targets[alias].add(link_target)
             alias_to_source_terms[alias].add(line)
+            alias_to_clusters[alias].update(clusters)
 
     unambiguous_mappings: Dict[str, str] = {}
     ambiguous_entries: List[Dict[str, object]] = []
@@ -108,16 +184,18 @@ def generate_keyword_mappings(
                 "alias": alias,
                 "candidates": sorted(targets),
                 "source_terms": sorted(alias_to_source_terms.get(alias, [])),
+                "clusters": sorted(alias_to_clusters.get(alias, {DEFAULT_CLUSTER})),
             })
 
     # Write unambiguous mappings to CSV
     try:
         with open(unambiguous_csv_output_path, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
-            writer.writerow(['Alias', 'LinkTarget'])
+            writer.writerow(['Alias', 'LinkTarget', 'Clusters'])
             # Sort by alias for consistent output
             for alias, target in sorted(unambiguous_mappings.items()):
-                writer.writerow([alias, target])
+                clusters = sorted(alias_to_clusters.get(alias, {DEFAULT_CLUSTER}))
+                writer.writerow([alias, target, "; ".join(clusters)])
         print(f"✅ Success! Wrote {len(unambiguous_mappings)} unambiguous keyword mappings to '{unambiguous_csv_output_path}'")
     except IOError as e:
         print(f"Error writing to CSV file {unambiguous_csv_output_path}: {e}")

@@ -13,6 +13,15 @@ scan_directories:
 authors_json_file: "authors.json"
 unambiguous_keywords_csv: "unambiguous-keywords.csv"
 ambiguous_keywords_json: "ambiguous-keywords.json"
+cluster_catalogue_file: "specs/cluster-catalogue.yaml"
 
 # Optional override for tag_extract.py output.
 keyword_output_csv: "unambiguous-keywords.csv"
+
+# Context classification settings (used by smart linking and filtered linker).
+context_classifier:
+  enabled: true
+  strategy: "llm"          # Options: llm, rules, hybrid
+  model: "gpt-4o-mini"
+  max_tokens: 400
+  include_explanation: true

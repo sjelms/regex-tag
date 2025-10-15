@@ -81,11 +81,11 @@
 ## Phase 5: Context-Aware Pivot (Strategy & Taxonomy)
 *Goal: Establish the metadata and process changes required for context-sensitive linking.*
 
-- [ ] T029: Define and document the initial topic cluster taxonomy (e.g., `education`, `construction`, `technology`, `institutions`) in `specs/spec.md`.
-- [ ] T030: Update the term source format and `unambiguous-keywords.csv` schema to include cluster/domain metadata for every entry.
-- [ ] T031: Extend `src/pkm_linker/generate_keywords.py` so it populates the new metadata fields while still producing ambiguous/unambiguous outputs.
-- [ ] T032: Augment `tests/test_generate_keywords.py` to verify that cluster metadata is written to the CSV and preserved in the JSON output.
-- [ ] T033: Document the taxonomy and CSV changes in `README.md` and `config.example.yaml`.
+- [x] T029: Define and document the initial topic cluster taxonomy (e.g., `education`, `construction`, `technology`, `institutions`) in `specs/spec.md`.
+- [x] T030: Update the term source format and `unambiguous-keywords.csv` schema to include cluster/domain metadata for every entry.
+- [x] T031: Extend `src/pkm_linker/generate_keywords.py` so it populates the new metadata fields while still producing ambiguous/unambiguous outputs.
+- [x] T032: Augment `tests/test_generate_keywords.py` to verify that cluster metadata is written to the CSV and preserved in the JSON output.
+- [x] T033: Document the taxonomy and CSV changes in `README.md` and `config.example.yaml`.
 
 ### Phase 5 Checkpoint
 - [ ] T034: Create session worklog in `logs/worklog_YYYY-MM-DD_s5.md`.

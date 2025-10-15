@@ -65,11 +65,26 @@ As a researcher and note-taker, I want to automatically create links in my perso
 
 ### Key Entities *(include if feature involves data)*
 - **Author**: Represents a person extracted from the BibTeX file. Contains `fullName`, `firstName`, and `lastName`.
-- **TermDefinition**: A single line inside the configured `term_source_file`. Each line defines the canonical link target and any aliases (including abbreviations in parentheses) for a concept.
-- **KeywordMapping**: A row in the `unambiguous-keywords.csv` that maps an alias to a primary term link.
+- **TermDefinition**: A single line inside the configured `term_source_file`. Each line defines the canonical link target, any aliases (including abbreviations in parentheses), and a short list of topic clusters that describe the term’s domain.
+- **KeywordMapping**: A row in the `unambiguous-keywords.csv` that maps an alias to a primary term link together with its associated clusters.
 - **MarkdownNote**: A `.md` file within a scannable directory that is a candidate for linking.
 - **Configuration**: User-defined settings stored in `config.yaml`.
 - **Secret**: User-specific API keys and endpoints stored in `.env`, ignored by Git.
+- **TopicCluster**: A named category (e.g., `education`, `construction`, `technology`, `policy`) captured in the cluster catalogue and referenced by both terms and notes.
+
+### Topic Cluster Catalogue *(reference implementation guidance)*
+- **Education & Learning**: Pedagogy, apprenticeship models, workforce development, curriculum design, edtech.
+- **Construction & Built Environment**: Offsite manufacturing, prefabrication, modular methods, BIM, DfMA, materials.
+- **Technology & Computing**: AI/ML, immersive interfaces (AR/VR/XR), robotics, automation, software platforms.
+- **Organizations & Institutions**: Universities, regulatory bodies, professional associations, government agencies.
+- **Geography & Regions**: Countries, cities, regional programs, policy jurisdictions.
+- **Policy & Governance**: Legislation, standards, funding programmes, labour regulation, public-private initiatives.
+- **Methods & Research**: Qualitative/quantitative methods, thematic analysis, ethnography, fieldwork approaches.
+- **People & Roles**: Specific individuals, roles (e.g., apprentices, instructors), workforce categories.
+- **Sustainability & Materials**: Green construction, timber systems, material science terms.
+- **General Concepts**: Crosscutting topics that don’t fit the above but are still valuable (e.g., knowledge acquisition, future of work).
+
+> The catalogue MAY evolve; new clusters must be documented here and in the shared configuration so scripts remain in sync.
 
 ---
 
