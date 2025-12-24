@@ -1,4 +1,4 @@
-# BibTeX to PKM Converter
+# BibLaTeX to PKM Converter
 
 This project provides a Python-based utility to automatically create a network of connections within your Personal Knowledge Management (PKM) system, such as Obsidian. The pipeline works in multiple stages:
 1.  It parses a master BibLaTeX file to generate a clean, structured `authors.json` file.
@@ -34,7 +34,7 @@ Stage 2 produces `ambiguous-keywords.json`, a list of aliases that map to multip
 
 ### Prerequisites
 
--   Python 3.8+
+-   Python 3.13+
 -   A BibTeX management tool (e.g., Zotero) to maintain your `.bib` file.
 
 ### Installation & Setup
