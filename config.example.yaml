@@ -9,6 +9,10 @@ raw_dir: "raw"
 extracted_dir: "extracted"
 wiki_dir: "wiki"
 graph_dir: "graph"
+watch_dir: "watch"
+processed_subdir: "processed"
+other_subdir: "other"
+show_completion_dialog: true
 
 provider:
   backend: "heuristic"       # heuristic | lm_studio | openai | gemini

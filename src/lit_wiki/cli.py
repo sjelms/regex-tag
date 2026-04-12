@@ -8,6 +8,7 @@ from .service import (
     extract_source,
     ingest_batch,
     ingest_source,
+    process_watch_folder,
     register_source,
     run_graph_build,
     run_lint,
@@ -39,6 +40,10 @@ def build_parser() -> argparse.ArgumentParser:
     graph_parser = subparsers.add_parser("graph", help="Graph operations")
     graph_subparsers = graph_parser.add_subparsers(dest="graph_command", required=True)
     graph_subparsers.add_parser("build", help="Build graph.json and graph.html from wiki links")
+
+    watch_parser = subparsers.add_parser("watch", help="Process queued files from the watch folder")
+    watch_subparsers = watch_parser.add_subparsers(dest="watch_command", required=True)
+    watch_subparsers.add_parser("run", help="Process the current watch folder queue sequentially")
 
     subparsers.add_parser("lint", help="Generate a basic lint report for the wiki")
     return parser
@@ -81,6 +86,21 @@ def main() -> int:
     if args.command == "graph" and args.graph_command == "build":
         nodes, edges = run_graph_build(config)
         print(f"Built graph with {nodes} nodes and {edges} edges")
+        return 0
+
+    if args.command == "watch" and args.watch_command == "run":
+        summary = process_watch_folder(config)
+        print(
+            "Watch run complete: "
+            f"success={summary.success_count} "
+            f"issues={summary.issue_count} "
+            f"failed={summary.fail_count} "
+            f"pdf={summary.pdf_count} "
+            f"epub={summary.epub_count} "
+            f"markdown={summary.markdown_count} "
+            f"other={summary.other_count} "
+            f"elapsed={summary.elapsed_seconds:.2f}s"
+        )
         return 0
 
     if args.command == "lint":

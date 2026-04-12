@@ -80,3 +80,24 @@ class SourceRecord:
     def from_dict(cls, payload: dict[str, Any]) -> "SourceRecord":
         return cls(**payload)
 
+
+@dataclass
+class WatchSummary:
+    success_count: int = 0
+    issue_count: int = 0
+    fail_count: int = 0
+    pdf_count: int = 0
+    epub_count: int = 0
+    markdown_count: int = 0
+    other_count: int = 0
+    elapsed_seconds: float = 0.0
+
+    def count_format(self, source_format: str) -> None:
+        if source_format == "pdf":
+            self.pdf_count += 1
+        elif source_format in {"epub", "epub_package"}:
+            self.epub_count += 1
+        elif source_format in {"markdown", "xhtml"}:
+            self.markdown_count += 1
+        else:
+            self.other_count += 1
