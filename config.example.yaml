@@ -1,27 +1,18 @@
-# Configure repository-specific paths. Provide absolute paths or use ~ for your home directory.
+# Public-safe example config for the bibliography-linked literature wiki.
+# Keep local paths and provider values in config.local.yaml or environment variables.
 
-# Directories that contain terminology or tag notes for tag_extract.py.
-tag_extract_directories:
-  - "/absolute/path/to/your/Terminology"
-  - "/absolute/path/to/your/Tags"
+bibliography_file: "regex-tag.bib"
+template_file: "specs/lit-note-template.md"
 
-# Directories scanned by link_authors.py and link_keywords.py.
-scan_directories:
-  - "/absolute/path/to/your/Notes"
+cache_dir: "cache"
+raw_dir: "raw"
+extracted_dir: "extracted"
+wiki_dir: "wiki"
+graph_dir: "graph"
 
-# Data files used across scripts (relative paths resolve from the repo root).
-authors_json_file: "authors.json"
-unambiguous_keywords_csv: "unambiguous-keywords.csv"
-ambiguous_keywords_json: "ambiguous-keywords.json"
-cluster_catalogue_file: "specs/cluster-catalogue.yaml"
-
-# Optional override for tag_extract.py output.
-keyword_output_csv: "unambiguous-keywords.csv"
-
-# Context classification settings (used by smart linking and filtered linker).
-context_classifier:
-  enabled: true
-  strategy: "llm"          # Options: llm, rules, hybrid
-  model: "gpt-4o-mini"
-  max_tokens: 400
-  include_explanation: true
+provider:
+  backend: "heuristic"       # heuristic | lm_studio | openai | gemini
+  model: "gemma-4-e4b-it"
+  api_base: ""               # Set in config.local.yaml or LIT_WIKI_API_BASE
+  api_key_env: "LIT_WIKI_API_KEY"
+  timeout_seconds: 60

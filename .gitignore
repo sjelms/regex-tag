@@ -4,6 +4,7 @@
 .LSOverride
 /_helper
 config.yaml
+config.local.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -191,3 +192,8 @@ cython_debug/
 # PyCharm
 /.idea
 /.vscode
+/raw/
+/extracted/
+/wiki/
+/graph/
+/cache/
