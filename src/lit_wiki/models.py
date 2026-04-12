@@ -70,6 +70,14 @@ class SourceRecord:
     ingest_status: str = "registered"
     extracted_path: str = ""
     provider: str = ""
+    processing_state: str = "registered"
+    escalation_reason: str = ""
+    local_attempts: int = 0
+    fallback_provider: str = ""
+    fallback_model: str = ""
+    approval_requested_at: str = ""
+    approval_decision: str = ""
+    usage_summary: dict[str, Any] = field(default_factory=dict)
     registered_at: str = ""
     updated_at: str = ""
 
@@ -91,6 +99,7 @@ class WatchSummary:
     markdown_count: int = 0
     other_count: int = 0
     elapsed_seconds: float = 0.0
+    cancelled: bool = False
 
     def count_format(self, source_format: str) -> None:
         if source_format == "pdf":
@@ -101,3 +110,45 @@ class WatchSummary:
             self.markdown_count += 1
         else:
             self.other_count += 1
+
+
+@dataclass
+class ProviderUsage:
+    provider_name: str
+    model: str
+    requests_made: int
+    estimated_input_tokens: int
+    estimated_output_tokens: int
+    estimated_total_tokens: int
+    estimated_cost: float = 0.0
+
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ApprovalRequest:
+    citekey: str
+    source_name: str
+    reason: str
+    primary_model: str
+    fallback_provider: str
+    fallback_model: str
+    estimated_chunk_count: int
+    usage: ProviderUsage
+    current_daily_tokens: int
+    max_daily_tokens: int
+
+
+@dataclass
+class GenerationOutcome:
+    status: str
+    sections: dict[str, Any] | None
+    provider_name: str
+    provider_model: str
+    usage: ProviderUsage | None = None
+    escalation_reason: str = ""
+    approval_request: ApprovalRequest | None = None
+    keyword_targets: list[str] = field(default_factory=list)
+    keyword_tags: list[str] = field(default_factory=list)
+    local_attempts: int = 0

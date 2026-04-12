@@ -14,3 +14,44 @@ scan_directories:
 authors_json_file: "authors.json"
 unambiguous_keywords_csv: "unambiguous-keywords.csv"
 ambiguous_keywords_json: "ambiguous-keywords.json"
+
+provider:
+  families:
+    openai:
+      label: "OpenAI"
+      provider: "openai"
+      task_models:
+        default: "gpt-5-nano"
+        extraction: "gpt-5-mini"
+        summary: "gpt-5.4"
+      models:
+        gpt-5.4: "gpt-5.4"
+        gpt-5-mini: "gpt-5-mini"
+        gpt-5-nano: "gpt-5-nano"
+
+    gemini:
+      label: "Gemini"
+      provider: "google"
+      task_models:
+        default: "gemini-3.1-flash-lite-preview"
+        extraction: "gemini-3-flash-preview"
+        summary: "gemini-3.1-pro-preview"
+      models:
+        gemini-3.1-pro-preview: "gemini-3.1-pro-preview"
+        gemini-3-flash-preview: "gemini-3-flash-preview"
+        gemini-3.1-flash-lite-preview: "gemini-3.1-flash-lite-preview"
+
+  primary:
+    backend: "heuristic"
+    model: "gemma-4-e4b-it"
+
+  fallbacks:
+    - name: "openai_summary"
+      family: "openai"
+      task_model: "summary"
+      api_key_env: "OPENAI_API_KEY"
+
+    - name: "gemini_extraction"
+      family: "gemini"
+      task_model: "extraction"
+      api_key_env: "GEMINI_API_KEY"

@@ -49,6 +49,14 @@ def render_note(
     editor_values = [person.wiki_link for person in entry.editors]
     if not author_values and not editor_values:
         author_values = ["[[Unknown Author]]"]
+    see_also_links = [f"[[{entry.citekey}_wiki]]"]
+    for link in sections.get("see_also_links", []):
+        if link not in see_also_links:
+            see_also_links.append(str(link))
+    tag_values = list(entry.keywords)
+    for tag in sections.get("keyword_tags", []):
+        if tag not in tag_values:
+            tag_values.append(str(tag))
 
     yaml_lines = [
         "---",
@@ -61,8 +69,8 @@ def render_note(
     yaml_lines.extend(_person_lines("author", author_values))
     yaml_lines.extend(_person_lines("editor", editor_values))
     yaml_lines.extend(_list_block("aliases", []))
-    yaml_lines.extend(_list_block("see also", [f"[[{entry.citekey}_wiki]]"]))
-    yaml_lines.extend(_list_block("tag", entry.keywords))
+    yaml_lines.extend(_list_block("see also", see_also_links))
+    yaml_lines.extend(_list_block("tag", tag_values))
     yaml_lines.append(_yaml_line("creation", creation))
     yaml_lines.append(_yaml_line("modified", today))
     yaml_lines.append("---")
@@ -158,4 +166,3 @@ def render_note(
         "",
     ]
     return "\n".join(yaml_lines + body_lines)
-

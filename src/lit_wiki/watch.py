@@ -6,7 +6,7 @@ import time
 from pathlib import Path
 
 from .config import AppConfig
-from .models import WatchSummary
+from .models import ApprovalRequest, ProviderUsage, WatchSummary
 
 
 SUPPORTED_FILE_SUFFIXES = {".pdf", ".epub", ".md", ".markdown", ".xhtml", ".html", ".htm"}
@@ -67,6 +67,73 @@ def show_final_dialog(summary: WatchSummary) -> None:
     " buttons {{"OK"}} default button "OK" with title "Literature Wiki"
     """
     subprocess.run(["osascript", "-e", applescript], check=False)
+
+
+def _show_dialog(script: str) -> str:
+    result = subprocess.run(["osascript", "-e", script], capture_output=True, text=True, check=False)
+    return (result.stdout or "").strip()
+
+
+def resolve_fallback_approval(config: AppConfig, request: ApprovalRequest) -> str:
+    default_decision = config.approval_policy.default_decision.lower()
+    if default_decision in {"approve", "skip", "cancel"}:
+        return default_decision
+    if shutil.which("osascript") is None:
+        return "skip"
+
+    applescript = f"""
+    set theButton to button returned of (display dialog "Fallback approval required
+
+    Source: {request.source_name}
+    Citekey: {request.citekey}
+    Reason: {request.reason}
+
+    Primary model: {request.primary_model}
+    Fallback provider: {request.fallback_provider}
+    Fallback model: {request.fallback_model}
+
+    Estimated requests: {request.estimated_chunk_count}
+    Estimated total tokens: {request.usage.estimated_total_tokens}
+    Daily tokens: {request.current_daily_tokens} / {request.max_daily_tokens}
+    " buttons {{"Cancel Queue", "Skip to Review", "Approve"}} default button "Approve" with title "Literature Wiki")
+    return theButton
+    """
+    result = _show_dialog(applescript)
+    mapping = {
+        "Approve": "approve",
+        "Skip to Review": "skip",
+        "Cancel Queue": "cancel",
+    }
+    return mapping.get(result, "skip")
+
+
+def show_fallback_complete_dialog(citekey: str, title: str, usage: ProviderUsage) -> None:
+    if shutil.which("osascript") is None:
+        return
+    applescript = f"""
+    display dialog "Fallback processing complete
+
+    Source: {title}
+    Citekey: {citekey}
+    Fallback provider: {usage.provider_name}
+    Model: {usage.model}
+    Requests: {usage.requests_made}
+    Estimated tokens: {usage.estimated_total_tokens}
+
+    Control has returned to local processing.
+    " buttons {{"OK"}} default button "OK" with title "Literature Wiki"
+    """
+    subprocess.run(["osascript", "-e", applescript], check=False)
+
+
+def show_info_dialog(message: str) -> None:
+    if shutil.which("osascript") is None:
+        return
+    escaped = message.replace('"', '\\"')
+    applescript = f"""
+    display dialog "{escaped}" buttons {{"OK"}} default button "OK" with title "Literature Wiki"
+    """
+    subprocess.run(["osascript", "-e", applescript], check=False, capture_output=True, text=True)
 
 
 def timed_watch_run(fn):
