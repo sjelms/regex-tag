@@ -29,6 +29,17 @@ def _person_lines(prefix: str, people: list[str]) -> list[str]:
     return [_yaml_line(f"{prefix} - {index}", person) for index, person in enumerate(people, start=1)]
 
 
+def _string_list(value: object) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        text = value.strip()
+        return [text] if text else []
+    if isinstance(value, list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    return [str(value).strip()] if str(value).strip() else []
+
+
 def render_note(
     entry: BibliographyEntry,
     source_record: SourceRecord,
@@ -50,11 +61,11 @@ def render_note(
     if not author_values and not editor_values:
         author_values = ["[[Unknown Author]]"]
     see_also_links = [f"[[{entry.citekey}_wiki]]"]
-    for link in sections.get("see_also_links", []):
+    for link in _string_list(sections.get("see_also_links", [])):
         if link not in see_also_links:
             see_also_links.append(str(link))
     tag_values = list(entry.keywords)
-    for tag in sections.get("keyword_tags", []):
+    for tag in _string_list(sections.get("keyword_tags", [])):
         if tag not in tag_values:
             tag_values.append(str(tag))
 
@@ -76,19 +87,19 @@ def render_note(
     yaml_lines.append("---")
 
     related_references = []
-    for citekey in sections.get("related_references", []):
+    for citekey in _string_list(sections.get("related_references", [])):
         related_references.append(f"- [[{citekey}_wiki]]")
 
     body_lines = [
         "",
         "### Summary of Key Points",
-        *[f"- {item}" for item in sections.get("summary_points", [])],
+        *[f"- {item}" for item in _string_list(sections.get("summary_points", []))],
         "",
         "### Questions:",
-        *[f"- {item}" for item in sections.get("questions", [])],
+        *[f"- {item}" for item in _string_list(sections.get("questions", []))],
         "",
         "### Notes:",
-        *[f"- {item}" for item in sections.get("notes", [])],
+        *[f"- {item}" for item in _string_list(sections.get("notes", []))],
         "",
         "---",
         "",
@@ -101,7 +112,7 @@ def render_note(
         "",
         "## Cross-reference Bibliography",
         "",
-        *sections.get("cross_reference_bibliography", []),
+        *_string_list(sections.get("cross_reference_bibliography", [])),
         "",
         "---",
         "",
@@ -109,7 +120,7 @@ def render_note(
         "> [!prompt]What was the context for this research?",
         ">What has been studied or determined already?",
         "",
-        *[f"- {item}" for item in sections.get("background", [])],
+        *[f"- {item}" for item in _string_list(sections.get("background", []))],
         "",
         "---",
         "",
@@ -118,7 +129,7 @@ def render_note(
         ">How did the author(s) collect data?",
         ">When and where did the research take place?",
         "",
-        *[f"- {item}" for item in sections.get("methods", [])],
+        *[f"- {item}" for item in _string_list(sections.get("methods", []))],
         "",
         "---",
         "",
@@ -126,7 +137,7 @@ def render_note(
         "> [!prompt] What highlights emerged?",
         ">Were there any surprises?",
         "",
-        *[f"- {item}" for item in sections.get("results", [])],
+        *[f"- {item}" for item in _string_list(sections.get("results", []))],
         "",
         "---",
         "",
@@ -134,28 +145,28 @@ def render_note(
         "> [!prompt] What is most striking about the tables, graphs, illustrations?",
         ">Why did the author(s) include them?",
         "",
-        *[f"- {item}" for item in sections.get("data", [])],
+        *[f"- {item}" for item in _string_list(sections.get("data", []))],
         "",
         "---",
         "",
         "# Conclusions",
         "> [!prompt] What did the author(s) learn overall?",
         "",
-        *[f"- {item}" for item in sections.get("conclusions", [])],
+        *[f"- {item}" for item in _string_list(sections.get("conclusions", []))],
         "",
         "---",
         "",
         "# Next Steps",
         "> [!prompt] What is implied or proposed for future study?",
         "",
-        *[f"- {item}" for item in sections.get("next_steps", [])],
+        *[f"- {item}" for item in _string_list(sections.get("next_steps", []))],
         "",
         "---",
         "",
         "# Significance",
         "> [!prompt] Why does this research matter?",
         "",
-        *[f"- {item}" for item in sections.get("significance", [])],
+        *[f"- {item}" for item in _string_list(sections.get("significance", []))],
         "",
         "---",
         "",

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import urllib.error
 import urllib.request
 
@@ -125,7 +126,23 @@ def _openai_compatible_request(provider: ProviderSpec, api_key: str, payload: di
     content = body["choices"][0]["message"]["content"]
     if isinstance(content, list):
         content = "".join(part.get("text", "") for part in content if isinstance(part, dict))
-    return json.loads(content)
+    if not isinstance(content, str):
+        raise json.JSONDecodeError("Provider response content is not text.", str(content), 0)
+
+    candidates = [content.strip()]
+    fenced = re.search(r"```(?:json)?\s*(.*?)\s*```", content, flags=re.DOTALL | re.IGNORECASE)
+    if fenced:
+        candidates.insert(0, fenced.group(1).strip())
+
+    for candidate in candidates:
+        if not candidate:
+            continue
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
+
+    raise json.JSONDecodeError("Unable to parse JSON from provider response.", content, 0)
 
 
 def _run_openai_compatible(
@@ -251,6 +268,23 @@ def _apply_keyword_enrichment(
     return enriched
 
 
+def _normalize_sections(
+    sections: dict[str, object],
+    entry: BibliographyEntry,
+    bibliography: BibliographyIndex,
+    extracted_text: str,
+) -> dict[str, object]:
+    normalized = dict(sections)
+    if "cross_reference_bibliography" not in normalized:
+        cross_refs = bibliography.same_author_entries(entry.citekey)
+        normalized["cross_reference_bibliography"] = [
+            f"- [[@{related.citekey}]] — {related.title}" for related in cross_refs
+        ] or ["- No local bibliography cross-references found yet."]
+    if "related_references" not in normalized:
+        normalized["related_references"] = _extract_references(extracted_text, bibliography, entry.citekey)
+    return normalized
+
+
 def generate_sections(
     config: AppConfig,
     entry: BibliographyEntry,
@@ -277,6 +311,7 @@ def generate_sections(
                 bibliography,
                 keyword_targets,
             )
+            sections = _normalize_sections(sections, entry, bibliography, extracted_text)
             valid, reason = _validate_sections(sections)
             if not valid:
                 last_reason = reason

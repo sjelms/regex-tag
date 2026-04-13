@@ -47,7 +47,25 @@ def _strip_markdown_frontmatter(text: str) -> str:
 
 
 def _extract_pdf_text(path: Path) -> str:
-    command = ["mdls", "-raw", "-name", "kMDItemTextContent", str(path)]
+    resolved = path.expanduser().resolve()
+    if not resolved.exists():
+        raise RuntimeError(f"PDF source not found: {resolved}")
+    try:
+        from pypdf import PdfReader
+
+        reader = PdfReader(str(resolved))
+        pages: list[str] = []
+        for page in reader.pages:
+            text = (page.extract_text() or "").strip()
+            if text:
+                pages.append(text)
+        content = "\n\n".join(pages).strip()
+        if content:
+            return content
+    except ImportError:
+        pass
+
+    command = ["mdls", "-raw", "-name", "kMDItemTextContent", str(resolved)]
     try:
         result = subprocess.run(command, capture_output=True, text=True, check=False)
     except FileNotFoundError as exc:
@@ -55,7 +73,7 @@ def _extract_pdf_text(path: Path) -> str:
 
     content = (result.stdout or "").strip()
     if not content or content == "(null)":
-        raise RuntimeError("Unable to extract text from PDF via mdls.")
+        raise RuntimeError("Unable to extract text from PDF via pypdf or mdls.")
     return content
 
 
