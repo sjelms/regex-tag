@@ -11,7 +11,7 @@ from .budget import can_spend, estimate_usage, load_budget_ledger, record_spend
 from .config import AppConfig, ProviderSpec
 from .keywords import enrich_keywords, load_keyword_catalogue
 from .models import ApprovalRequest, BibliographyEntry, GenerationOutcome
-from .utils import bullet_list, ensure_suffix_link
+from .utils import bullet_list, ensure_suffix_link, normalize_text, year_as_int
 
 REQUIRED_SECTION_KEYS = {
     "summary_points",
@@ -27,6 +27,13 @@ REQUIRED_SECTION_KEYS = {
     "next_steps",
     "significance",
 }
+GENERIC_REFERENCE_TITLES = {
+    normalize_text(value)
+    for value in ("Introduction", "Conclusion", "Preface", "Editorial", "Acknowledgements", "References")
+}
+DOI_PATTERN = re.compile(r"\b10\.\d{4,9}/[-._;()/:A-Z0-9]+\b", re.IGNORECASE)
+EXPLICIT_CITEKEY_PATTERN = re.compile(r"(?:\[\[@|@)([A-Za-z0-9][A-Za-z0-9:-]*)\]?\]?", re.IGNORECASE)
+REFERENCE_HEADER_PATTERN = re.compile(r"(?im)^\s*(references|bibliography|works cited)\s*$")
 
 
 def _first_non_empty(*values: str) -> str:
@@ -36,20 +43,57 @@ def _first_non_empty(*values: str) -> str:
     return ""
 
 
-def _extract_references(extracted_text: str, bibliography: BibliographyIndex, current_citekey: str) -> list[str]:
+def _reference_section(text: str) -> str:
+    match = REFERENCE_HEADER_PATTERN.search(text or "")
+    if not match:
+        return ""
+    return (text[match.end():] or "").strip()
+
+
+def _lead_surname(entry: BibliographyEntry) -> str:
+    people = entry.authors or entry.editors
+    if not people:
+        return ""
+    return normalize_text(people[0].surname or people[0].display_name)
+
+
+def _is_future_reference(source_entry: BibliographyEntry, candidate: BibliographyEntry) -> bool:
+    source_year = year_as_int(source_entry.year)
+    candidate_year = year_as_int(candidate.year)
+    return bool(source_year and candidate_year and candidate_year > source_year)
+
+
+def _extract_references(extracted_text: str, bibliography: BibliographyIndex, source_entry: BibliographyEntry) -> list[str]:
     references: list[str] = []
-    lowered = extracted_text.lower()
-    for citekey, entry in bibliography.entries.items():
-        if citekey == current_citekey:
+    for match in EXPLICIT_CITEKEY_PATTERN.findall(extracted_text or ""):
+        candidate = bibliography.get(match)
+        if candidate and candidate.citekey != source_entry.citekey and not _is_future_reference(source_entry, candidate):
+            references.append(candidate.citekey)
+
+    for doi in DOI_PATTERN.findall(extracted_text or ""):
+        candidate = bibliography.get_by_doi(doi.rstrip(".,);]"))
+        if candidate and candidate.citekey != source_entry.citekey and not _is_future_reference(source_entry, candidate):
+            references.append(candidate.citekey)
+
+    reference_section = _reference_section(extracted_text)
+    if not reference_section:
+        return sorted(dict.fromkeys(references))
+
+    normalized_section = normalize_text(reference_section)
+    for candidate in bibliography.entries.values():
+        if candidate.citekey == source_entry.citekey or not candidate.title.strip():
             continue
-        title = entry.title.strip()
-        if not title:
+        if _is_future_reference(source_entry, candidate):
             continue
-        if title.lower() in lowered:
-            references.append(citekey)
+        title_key = normalize_text(candidate.title)
+        if title_key in GENERIC_REFERENCE_TITLES:
             continue
-        if entry.doi and entry.doi.lower() in lowered:
-            references.append(citekey)
+        if title_key and title_key in normalized_section:
+            references.append(candidate.citekey)
+            continue
+        lead_surname = _lead_surname(candidate)
+        if lead_surname and candidate.year and lead_surname in normalized_section and candidate.year in reference_section and title_key in normalized_section:
+            references.append(candidate.citekey)
     return sorted(dict.fromkeys(references))
 
 
@@ -76,7 +120,7 @@ def heuristic_sections(
     if keyword_targets:
         notes.append("Controlled vocabulary guidance: " + ", ".join(keyword_targets[:8]))
     methods_source = _first_non_empty(extracted_text, entry.abstract)
-    related_citekeys = _extract_references(extracted_text, bibliography, entry.citekey)
+    related_citekeys = _extract_references(extracted_text, bibliography, entry)
     cross_refs = bibliography.same_author_entries(entry.citekey)
 
     return {
@@ -249,17 +293,23 @@ def _validate_sections(sections: dict[str, object]) -> tuple[bool, str]:
     abstract = str(sections.get("abstract", "")).strip()
     if not abstract:
         return False, "abstract empty"
+    for key in ("summary_points", "questions", "notes", "background", "methods", "results", "data", "conclusions", "next_steps", "significance"):
+        values = sections.get(key, [])
+        if isinstance(values, list):
+            normalized_items = [normalize_text(str(item)) for item in values if str(item).strip()]
+            if len(normalized_items) != len(set(normalized_items)):
+                return False, f"{key} contains duplicate items"
     return True, ""
 
 
 def _apply_keyword_enrichment(
     sections: dict[str, object],
-    keyword_targets: list[str],
+    keyword_links: list[str],
     keyword_tags: list[str],
 ) -> dict[str, object]:
     enriched = dict(sections)
-    existing_links = [str(item) for item in enriched.get("see_also_links", [])]
-    for target in keyword_targets:
+    existing_links = [str(item) for item in enriched.get("see_also_links", []) if str(item).strip()]
+    for target in keyword_links:
         link = f"[[{target}]]"
         if link not in existing_links:
             existing_links.append(link)
@@ -280,8 +330,7 @@ def _normalize_sections(
         normalized["cross_reference_bibliography"] = [
             f"- [[@{related.citekey}]] — {related.title}" for related in cross_refs
         ] or ["- No local bibliography cross-references found yet."]
-    if "related_references" not in normalized:
-        normalized["related_references"] = _extract_references(extracted_text, bibliography, entry.citekey)
+    normalized["related_references"] = _extract_references(extracted_text, bibliography, entry)
     return normalized
 
 
@@ -293,11 +342,16 @@ def generate_sections(
     current_daily_tokens: int = 0,
 ) -> GenerationOutcome:
     catalogue = load_keyword_catalogue(config)
-    keyword_targets, keyword_tags = enrich_keywords(
+    keyword_enrichment = enrich_keywords(
         extracted_text,
         catalogue,
-        max_links=config.keyword_policy.max_see_also_links,
+        config.keyword_policy,
+        title=entry.title,
+        abstract=entry.abstract,
     )
+    keyword_targets = keyword_enrichment.guidance_targets
+    keyword_links = keyword_enrichment.metadata_links
+    keyword_tags = keyword_enrichment.metadata_tags
 
     last_reason = "unknown provider failure"
     for _attempt in range(1, max(1, config.retry_policy.local_max_attempts) + 1):
@@ -316,7 +370,7 @@ def generate_sections(
             if not valid:
                 last_reason = reason
                 continue
-            sections = _apply_keyword_enrichment(sections, keyword_targets, keyword_tags)
+            sections = _apply_keyword_enrichment(sections, keyword_links, keyword_tags)
             usage = estimate_usage(
                 config.primary_provider.name,
                 config.primary_provider.model,
@@ -330,16 +384,17 @@ def generate_sections(
                 provider_model=config.primary_provider.model,
                 usage=usage,
                 keyword_targets=keyword_targets,
+                keyword_links=keyword_links,
                 keyword_tags=keyword_tags,
                 local_attempts=attempt_number,
             )
         except (RuntimeError, urllib.error.URLError, KeyError, json.JSONDecodeError) as exc:
             last_reason = str(exc)
 
-    if not config.fallback_providers:
+    if not config.fallback_providers and config.primary_provider.backend.lower() == "heuristic":
         sections = _apply_keyword_enrichment(
             heuristic_sections(entry, extracted_text, bibliography, keyword_targets),
-            keyword_targets,
+            keyword_links,
             keyword_tags,
         )
         usage = estimate_usage("heuristic", "heuristic", extracted_text, config.budget_policy)
@@ -351,6 +406,20 @@ def generate_sections(
             usage=usage,
             escalation_reason=last_reason,
             keyword_targets=keyword_targets,
+            keyword_links=keyword_links,
+            keyword_tags=keyword_tags,
+            local_attempts=max(1, config.retry_policy.local_max_attempts),
+        )
+
+    if not config.fallback_providers:
+        return GenerationOutcome(
+            status="needs_review",
+            sections=None,
+            provider_name=config.primary_provider.name,
+            provider_model=config.primary_provider.model,
+            escalation_reason=last_reason,
+            keyword_targets=keyword_targets,
+            keyword_links=keyword_links,
             keyword_tags=keyword_tags,
             local_attempts=max(1, config.retry_policy.local_max_attempts),
         )
@@ -365,12 +434,13 @@ def generate_sections(
                 sections=None,
                 provider_name=config.primary_provider.name,
                 provider_model=config.primary_provider.model,
-            usage=usage,
-            escalation_reason=denial_reason,
-            keyword_targets=keyword_targets,
-            keyword_tags=keyword_tags,
-            local_attempts=max(1, config.retry_policy.local_max_attempts),
-        )
+                usage=usage,
+                escalation_reason=denial_reason,
+                keyword_targets=keyword_targets,
+                keyword_links=keyword_links,
+                keyword_tags=keyword_tags,
+                local_attempts=max(1, config.retry_policy.local_max_attempts),
+            )
         approval = ApprovalRequest(
             citekey=entry.citekey,
             source_name=entry.title,
@@ -392,6 +462,7 @@ def generate_sections(
             escalation_reason=last_reason,
             approval_request=approval,
             keyword_targets=keyword_targets,
+            keyword_links=keyword_links,
             keyword_tags=keyword_tags,
             local_attempts=max(1, config.retry_policy.local_max_attempts),
         )
@@ -403,6 +474,7 @@ def generate_sections(
         provider_model=config.primary_provider.model,
         escalation_reason=last_reason,
         keyword_targets=keyword_targets,
+        keyword_links=keyword_links,
         keyword_tags=keyword_tags,
         local_attempts=max(1, config.retry_policy.local_max_attempts),
     )
@@ -415,6 +487,7 @@ def run_approved_fallback(
     bibliography: BibliographyIndex,
     approval_request: ApprovalRequest,
     keyword_targets: list[str],
+    keyword_links: list[str],
     keyword_tags: list[str],
 ) -> GenerationOutcome:
     fallback = next((item for item in config.fallback_providers if item.name == approval_request.fallback_provider), None)
@@ -426,11 +499,13 @@ def run_approved_fallback(
             provider_model=config.primary_provider.model,
             escalation_reason="approved fallback provider not configured",
             keyword_targets=keyword_targets,
+            keyword_links=keyword_links,
             keyword_tags=keyword_tags,
         )
 
     try:
         sections = _run_provider(fallback, config, entry, extracted_text, bibliography, keyword_targets)
+        sections = _normalize_sections(sections, entry, bibliography, extracted_text)
         valid, reason = _validate_sections(sections)
         if not valid:
             return GenerationOutcome(
@@ -438,13 +513,14 @@ def run_approved_fallback(
                 sections=None,
                 provider_name=fallback.name,
                 provider_model=fallback.model,
-            usage=approval_request.usage,
-            escalation_reason=reason,
-            keyword_targets=keyword_targets,
-            keyword_tags=keyword_tags,
-            local_attempts=0,
-        )
-        sections = _apply_keyword_enrichment(sections, keyword_targets, keyword_tags)
+                usage=approval_request.usage,
+                escalation_reason=reason,
+                keyword_targets=keyword_targets,
+                keyword_links=keyword_links,
+                keyword_tags=keyword_tags,
+                local_attempts=0,
+            )
+        sections = _apply_keyword_enrichment(sections, keyword_links, keyword_tags)
         record_spend(config.budget_ledger_file, approval_request.usage, entry.citekey)
         return GenerationOutcome(
             status="success",
@@ -453,6 +529,7 @@ def run_approved_fallback(
             provider_model=fallback.model,
             usage=approval_request.usage,
             keyword_targets=keyword_targets,
+            keyword_links=keyword_links,
             keyword_tags=keyword_tags,
             local_attempts=0,
         )
@@ -465,6 +542,7 @@ def run_approved_fallback(
             usage=approval_request.usage,
             escalation_reason=str(exc),
             keyword_targets=keyword_targets,
+            keyword_links=keyword_links,
             keyword_tags=keyword_tags,
             local_attempts=0,
         )

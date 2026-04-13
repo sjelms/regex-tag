@@ -150,5 +150,6 @@ class GenerationOutcome:
     escalation_reason: str = ""
     approval_request: ApprovalRequest | None = None
     keyword_targets: list[str] = field(default_factory=list)
+    keyword_links: list[str] = field(default_factory=list)
     keyword_tags: list[str] = field(default_factory=list)
     local_attempts: int = 0

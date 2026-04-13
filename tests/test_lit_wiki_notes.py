@@ -53,10 +53,9 @@ class TestNoteRendering(unittest.TestCase):
         self.assertIn('type: "[[@book]]"', note)
         self.assertIn('author - 4: "[[Dana Evans]]"', note)
         self.assertIn('editor - 1: "[[Emma Editor]]"', note)
-        self.assertIn("- [[Other2020-ab_wiki]]", note)
+        self.assertIn("- [[@Other2020-ab]]", note)
 
     def test_source_note_uses_wiki_suffix(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             path = source_note_path(Path(tmpdir), "Alpha2024-ab")
         self.assertEqual(path.name, "Alpha2024-ab_wiki.md")
-

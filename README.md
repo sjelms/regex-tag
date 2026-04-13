@@ -1,110 +1,122 @@
-# BibLaTeX to PKM Converter
+# Regex Tag + Literature Wiki
 
-This project provides a Python-based utility to automatically create a network of connections within your Personal Knowledge Management (PKM) system, such as Obsidian. The pipeline works in multiple stages:
-1.  It parses a master BibLaTeX file to generate a clean, structured `authors.json` file.
-2.  It generates an `unambiguous-keywords.csv` (and companion `ambiguous-keywords.json`) from a simple text file of your key terms and their aliases.
-3.  It uses these generated files to scan your existing Markdown notes, finding plain-text mentions and converting them into wiki-links (e.g., `John Smith` becomes `[[John Smith]]` or `CLT` becomes `[[Cognitive Load Theory (CLT)|CLT]]`).
+This repo now supports two related workflows:
 
-This retroactively links your notes to your academic sources and key concepts, creating a densely interconnected knowledge base.
+1. Legacy bibliography and keyword-linking utilities for an Obsidian vault.
+2. A bibliography-first literature wiki pipeline that ingests scholarly sources and writes managed source notes to `wiki/sources/`.
 
----
+The literature wiki path is strict by design:
 
-## ✨ Features
+- Raw inputs go into `watch/`
+- Generated source notes go into `wiki/sources/`
+- Bibliography identity always stays the citekey
+- Generated notes use `<citekey>_wiki.md`
+- `key` in note YAML always points to the bibliography note as `"[[@<citekey>]]"`
 
--   **CLI Control**: A single `main.py` entrypoint with flags (`--generate-authors`, `--generate-keywords`, `--link-authors`, etc.) to control the entire pipeline.
--   **Intelligent Author Linking**: Converts author names into wiki-links, including surname aliases (e.g., `Smith` becomes `[[John Smith|Smith]]`).
--   **Automatic Keyword & Alias Linking**: Parses a simple list of terms and automatically handles abbreviations in parentheses (e.g., `Cognitive Load Theory (CLT)`). It then finds and links both the full term and the alias, creating piped links where necessary.
--   **Configurable**: Uses a `config.yaml` file to easily define which note directories to scan.
--   **Safe & Idempotent**: The linking scripts will not re-link text that is already inside `[[...]]` brackets, so they can be run multiple times safely.
+Raw files should never be stored under `wiki/`. The lint command will flag them.
 
-### How Keyword Linking Works
+## Literature Wiki Workflow
 
-Stage 1 produces `unambiguous-keywords.csv`, a dictionary with two columns: `Alias` and `LinkTarget`.
+### Directory model
 
--   **`LinkTarget`**: This is always the full, canonical name of the note file (e.g., `Cognitive Load Theory (CLT)`).
--   **`Alias`**: This is a term that should be linked (e.g., `CLT` or `Cognitive Load Theory`).
-
-When the script finds an `Alias` in your text, it looks up its `LinkTarget`. If they are different, it creates a piped link: `[[LinkTarget|Alias]]`. This ensures the link is correct while preserving the original text.
-
-Stage 2 produces `ambiguous-keywords.json`, a list of aliases that map to multiple possible link targets. The optional `--smart-link` command invokes an LLM to examine each occurrence in context and choose the correct target before adding a wiki-link.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
--   Python 3.13+
--   A BibTeX management tool (e.g., Zotero) to maintain your `.bib` file.
-
-### Installation & Setup
-
-1.  **Clone the Repository**
-    ```bash
-    git clone <your-repository-url>
-    cd <your-repository-name>
-    ```
-
-2.  **Set up a Virtual Environment** (Recommended)
-    ```bash
-    # For macOS/Linux
-    python3 -m venv .venv
-    source .venv/bin/activate
-    ```
-
-3.  **Install Dependencies**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-4.  **Configure the Project**
-    -   Copy `config.example.yaml` to `config.yaml`.
-    -   Update `config.yaml` with the absolute path to your notes directory (`scan_directories`).
-    -   Place your BibLaTeX file (e.g., `regex-tag.bib`) in the root of the project.
-    -   Create a text file containing your list of keywords, one per line. Update `term_source_file` in `config.yaml` to point to this file.
-
----
-
-## Usage
-
-All commands are run through `main.py` from the project's root directory.
-
-```bash
-# View all available commands
-python main.py --help
+```text
+watch/              raw input queue
+watch/processed/    archived successful inputs
+watch/other/        failed or review-blocked inputs
+extracted/          cleaned extracted text used for analysis
+wiki/sources/       generated source notes only
+wiki/index.md       managed source index
+wiki/log.md         ingest log
+wiki/overview.md    rolling overview
 ```
 
-### Recommended Workflow
+### Supported source matching
 
-1.  **Generate Authors** (Run this whenever you add new authors to your `.bib` file)
-    ```bash
-    python main.py --generate-authors
-    ```
+- Markdown with YAML `citation-key`
+- EPUB or EPUB package with `iTunesMetadata.plist`
+- PDF filename using `[Title]_[Authors]_[year].pdf`
 
-2.  **Generate Keywords** (Run this when you update your term list)
-    ```bash
-    python main.py --generate-keywords
-    ```
+### Ingest path
 
-3.  **Link Authors & Keywords** (Run this to link everything in your vault)
-    ```bash
-    python main.py --link-authors
-    python main.py --link-keywords
-    ```
+```bash
+python main.py bib sync
+python main.py watch run
+```
 
-4.  **Smart Link Ambiguous Terms** (Optional, requires an API key in `.env`)
-    ```bash
-    python main.py --smart-link
-    ```
+The queue is sequential. One file is processed at a time. A successful input is archived to `watch/processed/`; failures and review-blocked items go to `watch/other/`.
 
-5.  **Run All Steps** (A convenient way to do everything at once, including smart linking if configured)
-    ```bash
-    python main.py --all
-    ```
+### Output contract
 
----
+- Generated source notes: `wiki/sources/<citekey>_wiki.md`
+- Internal bibliography link: `key: "[[@<citekey>]]"`
+- Entry type link: `type: "[[@<entry_type>]]"`
+- Complete `author - N` and `editor - N` YAML emission from BibTeX
+- `Related References` links to bibliography notes as `[[@citekey]]`, not assumed `_wiki` pages
 
-## ⚠️ Important Notes
+## Keyword policy
 
--   **Backup Your Vault!** The linking scripts modify your Markdown files in place. It is **highly recommended** that you back up your notes or use a version control system like Git before running them.
--   **Surname Ambiguity**: The author linking script cannot distinguish between two different authors who share the same last name. These rare cases may require manual correction.
+The controlled vocabulary is guidance-first, not blind rewrite.
+
+- Ambiguous aliases are not auto-emitted into note YAML
+- Metadata enrichment is capped and conservative
+- BibTeX keywords are preserved and deduped
+- Source-note `tag` and `see also` should stay small and topic-relevant
+
+## Extraction policy
+
+- PDFs use `pypdf` extraction first
+- EPUBs use `ebooklib` + `beautifulsoup4`
+- Extracted text is cleaned before analysis:
+  - control characters removed
+  - broken Unicode normalized
+  - common line-wrap artifacts repaired
+  - publisher/download boilerplate stripped where possible
+
+## Lint
+
+```bash
+python main.py lint
+```
+
+The lint report checks for:
+
+- broken wiki links
+- broken bibliography links
+- raw source files stored under `wiki/`
+- future-dated bibliography references
+- suspiciously large metadata blocks
+- extraction artifacts in cleaned extracted text
+
+## Legacy utilities
+
+The original bibliography-linking workflow still exists in this repo for vault maintenance:
+
+- generate authors
+- generate keyword catalogues
+- link authors in notes
+- link keywords in notes
+- optionally disambiguate ambiguous keyword aliases with an LLM
+
+Those utilities remain separate from the literature wiki ingest path. The literature wiki pipeline does not blindly rewrite source-note prose with keyword wikilinks.
+
+## Setup
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+For local LLM use, keep live provider settings in `config.local.yaml` or `.env`.
+
+## Main commands
+
+```bash
+python main.py bib sync
+python main.py source register --file path/to/source.md
+python main.py extract --citekey Example2024-ab
+python main.py ingest --citekey Example2024-ab
+python main.py watch run
+python main.py lint
+python main.py graph build
+```

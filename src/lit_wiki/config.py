@@ -58,7 +58,9 @@ class KeywordPolicyConfig:
     ambiguous_json: Path | None = None
     mode: str = "guidance_enrichment"
     max_guidance_terms: int = 20
-    max_see_also_links: int = 10
+    max_see_also_links: int = 3
+    max_metadata_tags: int = 3
+    min_body_matches: int = 3
 
 
 @dataclass
@@ -169,7 +171,9 @@ def _keyword_policy(root: Path, merged: dict[str, Any]) -> KeywordPolicyConfig:
         ambiguous_json=(root / ambiguous_json) if ambiguous_json else None,
         mode=payload.get("mode", "guidance_enrichment"),
         max_guidance_terms=int(payload.get("max_guidance_terms", 20)),
-        max_see_also_links=int(payload.get("max_see_also_links", 10)),
+        max_see_also_links=int(payload.get("max_see_also_links", 3)),
+        max_metadata_tags=int(payload.get("max_metadata_tags", 3)),
+        min_body_matches=int(payload.get("min_body_matches", 3)),
     )
 
 

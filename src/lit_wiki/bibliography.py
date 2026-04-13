@@ -6,7 +6,7 @@ from pathlib import Path
 from pybtex.database.input import bibtex
 
 from .models import BibliographyEntry, PersonRecord
-from .utils import first_year, normalize_text
+from .utils import dedupe_casefold, first_year, normalize_text
 
 
 def _person_record(person: "pybtex.database.Person") -> PersonRecord:
@@ -28,11 +28,20 @@ class BibliographyIndex:
     def __init__(self, entries: dict[str, BibliographyEntry]) -> None:
         self.entries = entries
         self.title_index: dict[str, list[str]] = {}
+        self.doi_index: dict[str, str] = {}
         for citekey, entry in entries.items():
             self.title_index.setdefault(normalize_text(entry.title), []).append(citekey)
+            if entry.doi:
+                self.doi_index[normalize_text(entry.doi)] = citekey
 
     def get(self, citekey: str) -> BibliographyEntry | None:
         return self.entries.get(citekey)
+
+    def get_by_doi(self, doi: str) -> BibliographyEntry | None:
+        if not doi:
+            return None
+        citekey = self.doi_index.get(normalize_text(doi))
+        return self.entries.get(citekey) if citekey else None
 
     def find_by_title_authors_year(
         self,
@@ -89,7 +98,7 @@ def parse_bibliography(path: Path) -> BibliographyIndex:
         authors = [_person_record(person) for person in entry.persons.get("author", [])]
         editors = [_person_record(person) for person in entry.persons.get("editor", [])]
         raw_keywords = fields.get("keywords", "")
-        keywords = [part.strip() for part in raw_keywords.split(";") if part.strip()]
+        keywords = dedupe_casefold([part.strip() for part in raw_keywords.split(";") if part.strip()])
         bib_entry = BibliographyEntry(
             citekey=citekey,
             title=fields.get("title", citekey).replace("\n", " ").strip(),
@@ -117,4 +126,3 @@ def write_registry(index: BibliographyIndex, output_path: Path) -> None:
     payload = {citekey: entry.as_dict() for citekey, entry in index.entries.items()}
     with output_path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2, ensure_ascii=False)
-

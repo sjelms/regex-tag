@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import traceback
 from pathlib import Path
 
@@ -24,12 +25,24 @@ from .watch import (
 )
 from .wiki import (
     build_graph,
+    ensure_concept_pages,
     ensure_person_pages,
     lint_wiki,
     update_index,
     update_log,
     update_overview,
 )
+
+RAW_SOURCE_FORMATS = {"pdf", "epub", "epub_package", "markdown", "xhtml", "html", "htm"}
+EXTRACTION_ARTIFACT_PATTERNS = [
+    re.compile(pattern, re.IGNORECASE)
+    for pattern in (
+        r"this content downloaded from",
+        r"all use subject to https?://about\.jstor\.org/terms",
+        r"your use of the jstor archive indicates",
+        r"jstor is a not-for-profit service",
+    )
+]
 
 
 def load_bibliography(config: AppConfig) -> BibliographyIndex:
@@ -51,6 +64,9 @@ def register_source(
     ensure_runtime_directories(config)
     bibliography = load_bibliography(config)
     registry = SourceRegistry.load(config.registry_file)
+    resolved_source = source_path.expanduser().resolve()
+    if _is_raw_source_under_wiki(config, resolved_source):
+        raise ValueError("Raw source files must be placed in the watch folder, not under wiki/.")
 
     match = MatchResult(citekey=citekey or "", confidence=1.0 if citekey else 0.0, reason="manual citekey", needs_review=False)
     if citekey:
@@ -110,6 +126,56 @@ def _load_record(config: AppConfig, citekey: str) -> SourceRecord:
     return record
 
 
+def _is_raw_source_under_wiki(config: AppConfig, source_path: Path) -> bool:
+    try:
+        relative = source_path.resolve().relative_to(config.wiki_dir.resolve())
+    except ValueError:
+        return False
+    source_format = detect_source_format(source_path)
+    if source_format not in RAW_SOURCE_FORMATS:
+        return False
+    return relative.suffix.lower() != ".md" or not relative.name.endswith("_wiki.md")
+
+
+def _validate_publishable_note(
+    config: AppConfig,
+    entry,
+    bibliography: BibliographyIndex,
+    extracted_text: str,
+    sections: dict[str, object],
+) -> str:
+    def string_list(value: object) -> list[str]:
+        if value is None:
+            return []
+        if isinstance(value, str):
+            return [value] if value.strip() else []
+        return [str(item) for item in value if str(item).strip()]
+
+    for pattern in EXTRACTION_ARTIFACT_PATTERNS:
+        if pattern.search(extracted_text):
+            return "extraction contamination detected"
+    if any(ord(char) < 32 and char not in "\n\t\r" for char in extracted_text):
+        return "extraction contains control characters"
+
+    related_refs = [
+        str(item).replace("[[@", "").replace("]]", "").replace("@", "").strip()
+        for item in string_list(sections.get("related_references", []))
+        if str(item).strip()
+    ]
+    for citekey in related_refs:
+        candidate = bibliography.get(citekey)
+        if candidate is None:
+            return f"broken bibliography key in Related References: {citekey}"
+        if candidate.year and entry.year and candidate.year > entry.year:
+            return f"future-dated related reference detected: {citekey}"
+
+    if len(string_list(sections.get("keyword_tags", []))) > config.keyword_policy.max_metadata_tags:
+        return "keyword tag enrichment exceeded configured cap"
+    if len(string_list(sections.get("see_also_links", []))) > config.keyword_policy.max_see_also_links:
+        return "see also enrichment exceeded configured cap"
+    return ""
+
+
 def ingest_source(config: AppConfig, citekey: str, approval_resolver=None) -> Path:
     ensure_runtime_directories(config)
     bibliography = load_bibliography(config)
@@ -165,6 +231,7 @@ def ingest_source(config: AppConfig, citekey: str, approval_resolver=None) -> Pa
             bibliography,
             outcome.approval_request,
             outcome.keyword_targets,
+            outcome.keyword_links,
             outcome.keyword_tags,
         )
         if outcome.status != "success":
@@ -187,6 +254,16 @@ def ingest_source(config: AppConfig, citekey: str, approval_resolver=None) -> Pa
         raise ValueError(outcome.escalation_reason)
 
     assert outcome.sections is not None
+    publish_error = _validate_publishable_note(config, entry, bibliography, extracted_text, outcome.sections)
+    if publish_error:
+        record.processing_state = "needs_review"
+        record.ingest_status = "needs_review"
+        record.escalation_reason = publish_error
+        record.provider = outcome.provider_name
+        record.local_attempts = max(record.local_attempts, outcome.local_attempts)
+        record.usage_summary = outcome.usage.as_dict() if outcome.usage else {}
+        _save_record(config, record)
+        raise ValueError(publish_error)
 
     note_path = source_note_path(config.wiki_sources_dir, citekey)
     existing = note_path.read_text(encoding="utf-8") if note_path.exists() else None
@@ -200,6 +277,7 @@ def ingest_source(config: AppConfig, citekey: str, approval_resolver=None) -> Pa
     _save_record(config, record)
 
     ensure_person_pages(config, entry)
+    ensure_concept_pages(config, entry, outcome.sections)
     update_index(config, entry)
     update_log(config, entry)
     update_overview(config, bibliography)

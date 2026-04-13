@@ -55,3 +55,13 @@ provider:
       family: "gemini"
       task_model: "extraction"
       api_key_env: "GEMINI_API_KEY"
+
+keywords:
+  enabled: true
+  unambiguous_csv: "unambiguous-keywords.csv"
+  ambiguous_json: "ambiguous-keywords.json"
+  mode: "guidance_enrichment"
+  max_guidance_terms: 20
+  max_see_also_links: 3
+  max_metadata_tags: 3
+  min_body_matches: 3

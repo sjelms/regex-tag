@@ -21,6 +21,13 @@ def first_year(value: str | None) -> str:
     return match.group(0) if match else ""
 
 
+def year_as_int(value: str | None) -> int | None:
+    year = first_year(value)
+    if not year:
+        return None
+    return int(year)
+
+
 def file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -44,3 +51,17 @@ def bullet_list(text: str, count: int = 3) -> list[str]:
 def ensure_suffix_link(citekey: str) -> str:
     return f"[[{citekey}_wiki]]"
 
+
+def dedupe_casefold(values: list[str]) -> list[str]:
+    deduped: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        cleaned = re.sub(r"\s+", " ", (value or "").strip())
+        if not cleaned:
+            continue
+        key = cleaned.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(cleaned)
+    return deduped

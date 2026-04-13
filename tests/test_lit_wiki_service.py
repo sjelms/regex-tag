@@ -5,7 +5,7 @@ from pathlib import Path
 
 from lit_wiki.config import load_config
 from lit_wiki.registry import SourceRegistry
-from lit_wiki.service import extract_source, ingest_source, process_watch_folder, register_source, sync_bibliography
+from lit_wiki.service import extract_source, ingest_source, process_watch_folder, register_source, run_lint, sync_bibliography
 
 
 class TestServiceWorkflow(unittest.TestCase):
@@ -295,6 +295,7 @@ class TestServiceWorkflow(unittest.TestCase):
                       enabled: true
                       unambiguous_csv: "unambiguous-keywords.csv"
                       mode: "guidance_enrichment"
+                      min_body_matches: 3
                     """
                 ),
                 encoding="utf-8",
@@ -307,6 +308,8 @@ class TestServiceWorkflow(unittest.TestCase):
                     citation-key: Fickett1996-aa
                     ---
                     CLT is mentioned as an important idea in this source.
+                    CLT remains central to the explanation in this source.
+                    Researchers return to CLT when discussing the main concept.
                     """
                 ).strip(),
                 encoding="utf-8",
@@ -320,3 +323,63 @@ class TestServiceWorkflow(unittest.TestCase):
             note_text = note_path.read_text(encoding="utf-8")
             self.assertIn('"[[Cognitive Load Theory (CLT)]]"', note_text)
             self.assertIn('"education-learning"', note_text)
+
+    def test_lint_flags_raw_sources_under_wiki(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            self._write_template(root)
+            self._write_basic_bib(root)
+            config = load_config(root)
+            (root / "wiki" / "sources").mkdir(parents=True)
+            (root / "wiki" / "sources" / "bad.pdf").write_bytes(b"%PDF-1.4 test")
+
+            report = run_lint(config)
+            self.assertIn("Raw Sources Under Wiki", report)
+            self.assertIn("wiki/sources/bad.pdf", report)
+
+    def test_related_references_do_not_emit_future_or_generic_matches(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            self._write_template(root)
+            (root / "regex-tag.bib").write_text(
+                textwrap.dedent(
+                    """
+                    @ARTICLE{Fickett1996-aa,
+                      title = {Finding genes by computer - the state of the art},
+                      author = {Fickett, James W},
+                      date = {1996},
+                      abstract = {Gene finding is surveyed in this article.}
+                    }
+
+                    @BOOK{Future2022-aa,
+                      title = {Introduction},
+                      author = {Example, Future},
+                      date = {2022}
+                    }
+                    """
+                ),
+                encoding="utf-8",
+            )
+            source_path = root / "input.md"
+            source_path.write_text(
+                textwrap.dedent(
+                    """
+                    ---
+                    citation-key: Fickett1996-aa
+                    ---
+                    References
+
+                    Introduction. Example reference heading only.
+                    """
+                ).strip(),
+                encoding="utf-8",
+            )
+
+            config = load_config(root)
+            sync_bibliography(config)
+            register_source(config, source_path)
+            extract_source(config, "Fickett1996-aa")
+            note_path = ingest_source(config, "Fickett1996-aa")
+            note_text = note_path.read_text(encoding="utf-8")
+            self.assertIn("No bibliography-matched cited references found yet.", note_text)
+            self.assertNotIn("[[@Future2022-aa]]", note_text)

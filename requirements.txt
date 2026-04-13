@@ -5,3 +5,7 @@ python-frontmatter
 python-dotenv
 openai
 pypdf
+ebooklib
+beautifulsoup4
+ftfy
+rapidfuzz

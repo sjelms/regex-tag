@@ -4,6 +4,7 @@ from datetime import date
 from pathlib import Path
 
 from .models import BibliographyEntry, SourceRecord
+from .utils import dedupe_casefold
 
 
 def source_note_path(base_dir: Path, citekey: str) -> Path:
@@ -64,10 +65,11 @@ def render_note(
     for link in _string_list(sections.get("see_also_links", [])):
         if link not in see_also_links:
             see_also_links.append(str(link))
-    tag_values = list(entry.keywords)
+    tag_values = dedupe_casefold(list(entry.keywords))
     for tag in _string_list(sections.get("keyword_tags", [])):
         if tag not in tag_values:
             tag_values.append(str(tag))
+    tag_values = dedupe_casefold(tag_values)
 
     yaml_lines = [
         "---",
@@ -88,7 +90,9 @@ def render_note(
 
     related_references = []
     for citekey in _string_list(sections.get("related_references", [])):
-        related_references.append(f"- [[{citekey}_wiki]]")
+        cleaned = citekey.replace("[[@", "").replace("]]", "").replace("@", "").strip()
+        if cleaned:
+            related_references.append(f"- [[@{cleaned}]]")
 
     body_lines = [
         "",
